@@ -4,9 +4,23 @@ import bodyParser from "body-parser";
 import connectDB from "./config/db.js"
 
 const app = express();
-app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json());
+
+
+const allowedOrigins=[ " " || process.env.port]
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
+app.use("/api/v1/user",userRouter);
+app.use("/api/v1/scan",scanRouter);
 
 const connectServer = async () => {
     try {

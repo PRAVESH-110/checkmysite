@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
 
-const router = express.Router();
+const userRouter = express.Router();
 app.use(express.json());
 
 const signupSchema = z.object({
@@ -20,7 +20,7 @@ const signinSchema = z.object({
   password: z.string().min(1, "Password is required")
 });
 
-router.post('/signup',async function(req,res){
+userRouter.post('/signup',async function(req,res){
 
     //validate input using parse first
     const validatedData = signupSchema.safeParse(req.body);
@@ -59,9 +59,18 @@ router.post('/signup',async function(req,res){
 })
 
 
-router.post('/signin',async function(req,res){
+userRouter.post('/signin',async function(req,res){
     //validate inputs
-    const validatedData = signinSchema.safeParse(req.body);
+    const result = signinSchema.safeParse(req.body);
+
+    if (!result.success) {
+    return res.status(400).json({
+      message: "Invalid input",
+      errors: result.error.errors
+    });
+  }
+
+    const {email, password}= result.data;
 
     const user = await User.findOne({email});
 
@@ -70,7 +79,6 @@ router.post('/signin',async function(req,res){
             message:"user not found"
         })
     }
-
     const isPasswordValid = await bcrypt.compare(password,user.password);
 
     if(!isPasswordValid){
@@ -79,9 +87,11 @@ router.post('/signin',async function(req,res){
         })
     }
 
-    const {email, password}= req.body;
 
-    const token = jwt.sign({id:user._id},process.env.JWT_SECRET);
+    const token = jwt.sign(
+        {id:user._id},
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" });
 
     const verifiedUser = jwt.verify(token,{email});
 
@@ -90,3 +100,5 @@ router.post('/signin',async function(req,res){
         token:token,
     })
 })
+
+export default adminRouter;
