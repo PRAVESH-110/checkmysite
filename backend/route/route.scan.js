@@ -1,11 +1,20 @@
 import express from "express";
-const app= express();
-app.use(express.json());
+import authMiddleware from "../middleware/authMiddleware.js";
+
+import {z} from "zod";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+dotenv.config();
 
 const scanRouter = express.Router();
-app.use(express.json());
+scanRouter.use(express.json());
 
-scanRouter.post("/scan",async function(req,res){
+const scanSchema= z.object({
+    url:z.string().url()
+})
+
+scanRouter.post("/scan",authMiddleware,async function(req,res){
 
 })
 
