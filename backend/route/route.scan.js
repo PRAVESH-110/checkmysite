@@ -1,7 +1,6 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
 import {Scan} from "../model/model.scan.js"
-import authMiddleware from "../middleware/authMiddleware.js";
 import {z} from "zod";
 import processScan from "../jobHandler/processScan.js";
 

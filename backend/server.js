@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 
-const allowedOrigins=[ " " || process.env.port];
+const allowedOrigins=[ "http://localhost:3000" || process.env.port];
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -28,8 +28,8 @@ app.use("/api/v1/scan",scanRouter);
 const connectServer = async () => {
     try {
         await connectDB();
-        app.listen(3000, () => {
-            console.log("listening on 3000");
+        app.listen(5000, () => {
+            console.log("listening on 5000");
         })
     }
     catch (err) {

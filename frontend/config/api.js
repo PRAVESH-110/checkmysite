@@ -1,4 +1,4 @@
-API_BASE_URL= "vsefbef"
+API_BASE_URL= "http://localhost:5000/api/v1"
 
 export const apiEndpoints ={
     user:{
@@ -6,8 +6,8 @@ export const apiEndpoints ={
         signin:`${API_BASE_URL}/user/signin`
     },
     scan:{
-        create:`${API_BASE_URL}/scan/create`,
-        list:`${API_BASE_URL}/scan/list`,
+        create:`${API_BASE_URL}/scan`,
+        list:`${API_BASE_URL}/scan/${scanId}`,
     }
 
 };
