@@ -1,4 +1,4 @@
-"use-client"
+"use client"
 import Link from 'next/link';
 import React,{useState} from "react"
 
@@ -6,7 +6,7 @@ export default function Navbar() {
 
     const[login, setLogin] = useState(false);
 
-    
+
     return (
         <div className='flex'>
         <nav className="fixed left-1/2 -translate-x-1/2 w-[70%] gap-2 z-[600] flex justify-between align-center items-center mt-3 mx-2 px-5 py-1 bg-white/5 backdrop-blur-md border-white border-2 rounded-full transition-all duration-300 dark:bg-black/20 dark:border-white/10">
@@ -35,9 +35,27 @@ export default function Navbar() {
             </Link>
         </nav>
 
-        <button
-            onClick={() => setLogin(!login)}
-            className='fixed top-1 right-2 text-right m-4 text-black border rounded-full px-4 py-2 hover:cursor-pointer bg-gradient-to-br from-[#FF6B6B] to-[#556270]'>L </button>
+        <div className='relative'>
+            <button
+                type='button'
+                onClick={() => setLogin(!login)}
+                className='fixed top-1 right-2 text-right m-4 text-black border rounded-full px-4 py-2 hover:cursor-pointer bg-gradient-to-br from-[#FF6B6B] to-[#556270]'>L
+            </button>
+
+            <div>
+                <Link href='/login'
+                className='block px-4 py-2 text-sm hover:bg-gray-100'>
+                    Login</Link>
+            </div> 
+
+            {login && (
+                <div>
+                   <Link href='/'
+                   className='block px-4 py-2 text-sm hover:bg-gray-100'>
+                    Logout</Link> 
+                </div>
+            )}
+        </div>
         </div>
     );
 }
