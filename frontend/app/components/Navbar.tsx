@@ -38,13 +38,13 @@ export default function Navbar() {
             </Link>
         </nav>
 
-        <div className="relative">
-      
+
+      <div className="fixed right-4 top-5 z-[1000]">
       {/* Button */}
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="text-black border rounded-full px-4 py-2 bg-gradient-to-br from-[#FF6B6B] to-[#556270]"
+        className=" z-[1001] hover:cursor-pointer right-2 top-4 text-black border rounded-full px-4 py-2 bg-gradient-to-br from-[#FF6B6B] to-[#556270]"
       >
         L
       </button>
@@ -56,10 +56,10 @@ export default function Navbar() {
           {!isAuthenticated ? (
             <Link
               href="/login"
-              className="block px-4 py-2 text-sm hover:bg-gray-100"
+              className="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
               onClick={() => setOpen(false)}
             >
-              Login
+              Login/ Sign Up
             </Link>
           ) : (
             <button
