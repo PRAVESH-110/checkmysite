@@ -15,8 +15,8 @@ export default function homepageAnalyzer(html) {
 
   if (!signals.hasTitle) issues.push("Missing <title>");
   if (!signals.hasMetaDescription) issues.push("Missing meta description");
-  if (!signals.hasH1) issues.push("Missing H1");
-  if (!signals.hasCTA) issues.push("No clear CTA");
+  if (!signals.hasH1) issues.push("Missing Heading");
+  if (!signals.hasCTA) issues.push("No clear Call to action");
 
   return {
     signals,
