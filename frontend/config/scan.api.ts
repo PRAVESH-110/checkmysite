@@ -20,12 +20,17 @@ export async function scanRequest(url: string) {
   return response.json(); // { scanId, status }
 }
 
-export async function getScanById(token: string, scanId: string) {
+export async function getScanById(scanId: string) {
+  const token = localStorage.getItem("token");
+
+  if (!token) throw new Error("Not authenticated by token")
+
   const res = await fetch(apiEndpoints.scan.getById(scanId), {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`
-    }
+    },
+    cache: "no-store",
   });
 
   if (!res.ok) {

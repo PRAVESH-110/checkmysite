@@ -3,36 +3,44 @@ import homepageAnalyzer from "../analyzers/homepageAnalyzer.js";
 import computeScore from "../scoring/computeScore.js";
 
 async function processScan(scanId) {
-  try {
-    // 1️⃣ Mark scan as running
-    await Scan.findByIdAndUpdate(scanId, {
-      status: "running"
-    });
+  let scan;
 
-    // 2️⃣ Fetch scan
-    const scan = await Scan.findById(scanId);
+  try {
+    // 1️⃣ Atomically fetch + mark running
+    scan = await Scan.findByIdAndUpdate(
+      scanId,
+      { status: "running" },
+      { new: true }
+    );
     if (!scan) return;
 
-    // 3️⃣ Fetch website HTML
+    // 2️⃣ Fetch website HTML safely
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+
     const response = await fetch(scan.url, {
-      method: "GET",
       redirect: "follow",
-      timeout: 15000
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "WebolutionBot/1.0"
+      }
     });
 
+    clearTimeout(timeout);
+
     if (!response.ok) {
-      throw new Error(`Failed to fetch URL: ${response.status}`);
+      throw new Error(`Failed to fetch URL (${response.status})`);
     }
 
     const html = await response.text();
 
-    // 4️⃣ Analyze homepage
+    // 3️⃣ Analyze homepage
     const analysis = homepageAnalyzer(html);
 
-    // 5️⃣ Compute score
+    // 4️⃣ Compute score
     const score = computeScore(analysis);
 
-    // 6️⃣ Save results
+    // 5️⃣ Save results
     await Scan.findByIdAndUpdate(scanId, {
       status: "completed",
       score,
@@ -44,10 +52,9 @@ async function processScan(scanId) {
   } catch (err) {
     console.error("Scan failed:", err.message);
 
-    // 7️⃣ Mark scan as failed
     await Scan.findByIdAndUpdate(scanId, {
       status: "failed",
-      error: err.message
+      errors: err.message
     });
   }
 }

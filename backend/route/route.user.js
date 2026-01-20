@@ -85,7 +85,7 @@ userRouter.post('/signin', async function (req, res) {
     }
 
 
-    const token = jwt.sign(
+    const token = jwt.sign( 
         { id: user._id },
         process.env.JWT_SECRET,
         { expiresIn: "24h" });

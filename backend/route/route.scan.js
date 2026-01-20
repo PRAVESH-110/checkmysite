@@ -76,9 +76,12 @@ scanRouter.get('/:scanId',authMiddleware,async function (req,res){
     response.error = scan.errors || "Scan failed";
   }
 
-    return res.status(200).json({
-        response
-    })
+  // 🔴 IMPORTANT: disable caching for polling endpoint
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
+    return res.status(200).json(response)
 })
 
 export default scanRouter;
