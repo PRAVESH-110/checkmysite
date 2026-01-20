@@ -18,7 +18,7 @@ export default function Home() {
 
     // CTA
     let cta = 0;
-    if (signals.hasCTA) cta = 100;
+    if (signals.hasCTA) cta = 95;
 
     // Mobile
     let mobile = 0;
@@ -56,6 +56,13 @@ export default function Home() {
       console.log("", err);
     }
   }
+
+  function getBarColor(score: number) {
+  if (score > 90) return "bg-green-500";
+  if (score < 50) return "bg-red-500";
+  return "bg-yellow-500";
+}
+
 
   // Polling Effect
   useEffect(() => {
@@ -179,10 +186,11 @@ export default function Home() {
               <div className="grid grid-cols-2 gap-x-8 gap-y-6">
                 {/* Map through calculated breakdown categories */}
                 {[
-                  { label: 'Constructive Call to Action', score: breakdown.cta, color: 'bg-green-500' },
-                  { label: 'Mobile Responsiveness', score: breakdown.mobile, color: 'bg-yellow-500' },
-                  { label: 'Page Load Speed', score: breakdown.speed, color: 'bg-red-500' },
-                  { label: 'Trust Signals', score: breakdown.trust, color: 'bg-blue-500' },
+                  { label: 'Constructive Call to Action', score: breakdown.cta },
+                  { label: 'Mobile Responsiveness', score: breakdown.mobile },
+                  { label: 'Page Load Speed', score: breakdown.speed },
+                  { label: 'Trust Signals', score: breakdown.trust },
+
                 ].map((metric, i) => (
                   <div key={i} className="mb-2">
                     <div className="flex justify-between text-sm text-[var(--foreground)] opacity-80 mb-2 dark:text-white/80">
@@ -190,7 +198,7 @@ export default function Home() {
                       <span className="font-mono">{metric.score}/100</span>
                     </div>
                     <div className="h-2 bg-black/10 rounded-full overflow-hidden dark:bg-white/10">
-                      <div className={`h-full ${metric.color} transition-all duration-1000`} style={{ width: `${metric.score}%` }}></div>
+                      <div className={`h-full ${getBarColor(metric.score)} transition-all duration-1000`} style={{ width: `${metric.score}%` }}></div>
                     </div>
                   </div>
                 ))}
