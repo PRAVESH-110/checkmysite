@@ -8,5 +8,9 @@ export const apiEndpoints = {
     scan: {
         create: `${API_BASE_URL}/scan`,
         getById: (scanId: string) => `${API_BASE_URL}/scan/${scanId}`,
+    },
+    order: {
+        create: `${API_BASE_URL}/payment/create-order`,
+        verify: `${API_BASE_URL}/payment/verify`
     }
 };

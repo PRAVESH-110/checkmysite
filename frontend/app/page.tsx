@@ -1,6 +1,7 @@
 'use client';
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { scanRequest, getScanById } from "../config/scan.api"
+import { useToast } from "./providers/ToastProvider";
 
 export default function Home() {
 
@@ -11,6 +12,9 @@ export default function Home() {
   const [inputUrl, setInputUrl] = useState("");
   const [scanId, setScanId] = useState("");
   const [error, setError] = useState("");
+
+  const { showToast } = useToast();
+  const hasNotifiedRef = useRef(false);
 
   const calculateBreakdown = (result: any) => {
     if (!result || !result.signals) return { cta: 0, mobile: 0, speed: 0, trust: 0 };
@@ -54,14 +58,15 @@ export default function Home() {
       setLoading(false);
       setError(err.message || "Something went wrong");
       console.log("", err);
+      showToast(err.message || "Something went wrong", "error");
     }
   }
 
   function getBarColor(score: number) {
-  if (score > 90) return "bg-green-500";
-  if (score < 50) return "bg-red-500";
-  return "bg-yellow-500";
-}
+    if (score > 90) return "bg-green-500";
+    if (score < 50) return "bg-red-500";
+    return "bg-yellow-500";
+  }
 
 
   // Polling Effect
@@ -73,12 +78,16 @@ export default function Home() {
       try {
         const result = await getScanById(scanId);
 
-        if (result.status === "completed") {
+        if (!hasNotifiedRef.current && result.status === "completed") {
           setScanResult(result);
           setLoading(false);
+          showToast("Scan completed successfully", "success");
           setScanId(""); // Stop polling
           clearInterval(intervalId);
-        } else if (result.status === "failed") {
+        }
+
+        if (!hasNotifiedRef.current && result.status === "failed") {
+          hasNotifiedRef.current = true;
           setError(result.error || "Scan failed");
           setLoading(false);
           setScanId("");
@@ -94,6 +103,8 @@ export default function Home() {
   }, [scanId]);
 
   return (
+    //use font inter
+
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-8 py-16 text-center bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,255,0.05)_0%,transparent_50%)]">
       <section className="max-w-[800px] mx-auto mb-16">
         <h1 className="text-6xl font-extrabold leading-[1.1] mb-6 tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.7)] bg-clip-text text-transparent dark:from-white dark:to-[#aaa]">
@@ -171,6 +182,7 @@ export default function Home() {
                   <span className="text-sm text-[var(--foreground)] opacity-60 uppercase tracking-widest mt-1 dark:text-white/60">Score</span>
                 </div>
               </div>
+
               <div className="text-center">
                 <h3 className="text-xl font-bold bg-gradient-to-br from-[#7051c3] to-[#ff70cc] bg-clip-text text-transparent mb-2">Conversion Potential</h3>
                 <p className="text-sm text-[var(--foreground)] opacity-70 dark:text-white/60">
@@ -203,6 +215,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+              <h4 className='mt-5 text-gray-400 text-sm'>Please note that this data does not represent complete website scan, but just the UI/UX analysis. For a detailed deterministic scan check plans</h4>
             </div>
           </div>
 

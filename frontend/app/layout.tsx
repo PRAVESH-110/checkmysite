@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./footer/page";
 import { AuthProvider } from "../context/AuthContext";
+import { ToastProvider } from "./providers/ToastProvider"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,12 +35,15 @@ export default function RootLayout({
       >
         <AuthProvider>
           <Navbar />
-          <main style={{ paddingTop: '80px', minHeight: '100vh' }}>
-            {children}
-          </main>
-          {modal}
+          <ToastProvider>
+            <main style={{ paddingTop: '80px', minHeight: '100vh' }}>
+              {children}
+            </main>
+            {modal}
+          </ToastProvider>
           <Footer />
         </AuthProvider>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       </body>
     </html>
   );

@@ -32,7 +32,6 @@ scanRouter.post("/",authMiddleware,async function(req,res){
 
     processScan(scan._id);
 
-
     return res.status(200).json({
         message:"Scan created successfully",
         scanId:scan._id,
@@ -73,7 +72,7 @@ scanRouter.get('/:scanId',authMiddleware,async function (req,res){
   }
 
   if (scan.status === "failed") {
-    response.error = scan.errors || "Scan failed";
+    response.error = scan.error || "Scan failed";
   }
 
   // 🔴 IMPORTANT: disable caching for polling endpoint
