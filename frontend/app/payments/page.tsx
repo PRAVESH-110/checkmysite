@@ -5,6 +5,7 @@ import { useState, Suspense, useEffect } from "react";
 import { apiEndpoints } from "../../config/api";
 import { useAuth } from "../../context/AuthContext";
 import Link from "next/link";
+import { useToast } from "../providers/ToastProvider"; // Optional: Use if you want toast notifications
 
 const PRICING_PLANS = {
     Basic: { price: "$29", message: "Upgrade to Basic Plan" },
@@ -15,6 +16,7 @@ function PaymentContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const { token, isAuthenticated } = useAuth();
+    const { showToast } = useToast();
 
     const planName = searchParams.get("plan");
     const [loading, setLoading] = useState(false);
@@ -23,9 +25,9 @@ function PaymentContent() {
 
     // Redirect if not authenticated
     useEffect(() => {
-        // Give a small delay to allow auth to restore
         const timer = setTimeout(() => {
             if (!isAuthenticated && !token) {
+                showToast("Please login to continue", "error");
                 router.push("/signup");
             }
         }, 1000);
@@ -33,6 +35,16 @@ function PaymentContent() {
     }, [isAuthenticated, token, router]);
 
     const planDetails = planName && PRICING_PLANS[planName as keyof typeof PRICING_PLANS];
+
+    const loadRazorpayScript = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+    };
 
     const handleConfirm = async () => {
         if (!token) {
@@ -44,6 +56,7 @@ function PaymentContent() {
         setErrorMsg("");
 
         try {
+            // 1. Create Order
             console.log("Creating order for plan:", planName);
             const res = await fetch(apiEndpoints.order.create, {
                 method: "POST",
@@ -56,24 +69,93 @@ function PaymentContent() {
 
             if (!res.ok) {
                 const errData = await res.json().catch(() => ({}));
-                console.error("Order creation failed:", res.status, errData);
                 throw new Error(errData.message || "Failed to create order");
             }
 
-            const data = await res.json();
-            console.log("Order created successfully:", data);
+            const order = await res.json();
+            console.log("Order created:", order);
 
-            setStatus("success");
-            // Here you would typically redirect to Razorpay or payment gateway
-            // For now, we show success as requested.
+            // 2. Load Razorpay SDK
+            const isLoaded = await loadRazorpayScript();
+            if (!isLoaded) {
+                throw new Error("Razorpay SDK failed to load. Are you online?");
+            }
+
+            // 3. Open Razorpay Modal
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+                amount: order.amount,
+                currency: order.currency,
+                name: "checkmysite",
+                description: `Upgrade to ${planName} Plan`,
+                order_id: order.id, // This is the order_id created in the backend
+                handler: async function (response: any) {
+                    console.log("Payment Success:", response);
+                    await verifyPayment(response);
+                },
+                prefill: {
+                    // You can prefill user details here if available from AuthContext
+                    // name: user.name,
+                    // email: user.email,
+                },
+                theme: {
+                    color: "#7051c3",
+                },
+                modal: {
+                    ondismiss: function () {
+                        setLoading(false);
+                        console.log('Checkout form closed');
+                    }
+                }
+            };
+
+            const rzp1 = new (window as any).Razorpay(options);
+            rzp1.on('payment.failed', function (response: any) {
+                console.error("Payment Failed:", response.error);
+                const msg = response.error.description || "Payment failed";
+                setErrorMsg(msg);
+                setStatus("error");
+                setLoading(false);
+                showToast(msg, "error");
+            });
+            rzp1.open();
+
         } catch (error: any) {
-            console.error("Payment error:", error);
+            console.error("Payment flow error:", error);
             setStatus("error");
             setErrorMsg(error.message || "Something went wrong. Please try again.");
+            setLoading(false);
+            showToast(error.message || "Payment initialization failed", "error");
+        }
+    };
+
+    const verifyPayment = async (paymentData: any) => {
+        try {
+            const res = await fetch(apiEndpoints.order.verify, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(paymentData),
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                setStatus("success");
+                showToast("Payment successful! Plan upgraded.", "success");
+            } else {
+                throw new Error(data.message || "Verification failed");
+            }
+        } catch (error: any) {
+            console.error("Verification error:", error);
+            setStatus("error");
+            setErrorMsg(error.message || "Payment verification failed. Please contact support.");
+            showToast("Payment verification failed", "error");
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     if (!planName || !planDetails) {
         return (
@@ -94,11 +176,15 @@ function PaymentContent() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <h2 className="text-2xl font-bold mb-2 text-[var(--foreground)] dark:text-white">Order Created!</h2>
+                <h2 className="text-2xl font-bold mb-2 text-[var(--foreground)] dark:text-white">Payment Successful!</h2>
                 <p className="text-[var(--foreground)] opacity-70 mb-6 dark:text-white/70">
-                    Your upgrade request for {planName} has been initiated.
+                    You have successfully upgraded to the {planName} plan.
                 </p>
-                <div className="text-sm opacity-50">Redirecting to payment gateway...</div>
+                <Link href="/">
+                    <button className="px-6 py-3 rounded-xl font-semibold bg-white text-black hover:bg-gray-100 transition-colors">
+                        Go to Dashboard
+                    </button>
+                </Link>
             </div>
         );
     }

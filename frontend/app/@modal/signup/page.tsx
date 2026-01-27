@@ -41,10 +41,15 @@ export default function SignUp() {
     }
     return (
         <Modal>
-            <div className="relative overflow-hidden bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl dark:bg-black/40 dark:border-white/10">
+            <div className="relative overflow-hidden bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl 
+             w-full  max-w-[95vw] sm:max-w-md md:max-w-lg lg:max-w-xl
+            max-h-[90vh] overflow-y-auto
+
+            dark:bg-black/40 dark:border-white/10">
+
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#556270] to-[#FF6B6B]" />
 
-                <div className="text-center mb-8">
+                <div className="text-center mb-4 sm:mb-6">
                     <h2 className="text-3xl font-bold bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent mb-2">
                         Get Started
                     </h2>
@@ -53,7 +58,7 @@ export default function SignUp() {
                     </p>
                 </div>
 
-                <form className="space-y-5" onSubmit={handleSubmit}>
+                <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
                     <div>
                         <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2 ml-1">
                             First Name
@@ -63,7 +68,7 @@ export default function SignUp() {
                             type="text"
                             placeholder="John"
                             required
-                            className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#556270]/50 focus:border-[#556270] transition-all"
+                            className="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#556270]/50 focus:border-[#556270] transition-all"
                         />
                     </div>
 
@@ -76,7 +81,7 @@ export default function SignUp() {
                             type="text"
                             placeholder="Doe"
                             required
-                            className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#556270]/50 focus:border-[#556270] transition-all"
+                            className="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#556270]/50 focus:border-[#556270] transition-all"
                         />
                     </div>
 
@@ -89,7 +94,7 @@ export default function SignUp() {
                             type="email"
                             placeholder="you@company.com"
                             required
-                            className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#556270]/50 focus:border-[#556270] transition-all"
+                            className="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#556270]/50 focus:border-[#556270] transition-all"
                         />
                     </div>
 
@@ -102,7 +107,7 @@ export default function SignUp() {
                             type="password"
                             placeholder="••••••••"
                             required
-                            className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#556270]/50 focus:border-[#556270] transition-all"
+                            className="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#556270]/50 focus:border-[#556270] transition-all"
                         />
                     </div>
 
