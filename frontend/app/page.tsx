@@ -108,12 +108,13 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-8 py-16 text-center bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,255,0.05)_0%,transparent_50%)]">
       <section className="max-w-[800px] mx-auto mb-16">
         <h1 className="text-6xl font-extrabold leading-[1.1] mb-6 tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.7)] bg-clip-text text-transparent dark:from-white dark:to-[#aaa]">
-          Stop Losing Customers. <br />
-          Get Your Conversion Score.
+          Stop Losing Customers <br />
         </h1>
-        <p className="text-xl leading-relaxed text-[var(--foreground)] opacity-70 mb-12 max-w-[600px] mx-auto">
-          Deterministic analysis of your website's conversion blockers.
-          No fluff, just fixable insights based on proven UX principles.
+        <h3 className="text-4xl font-extrabold leading-[1.1] mb-6 tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.7)] bg-clip-text text-transparent dark:from-white dark:to-[#aaa]">Get Your Conversion Score</h3>
+
+        <p className="text-xl leading-relaxed text-[var(--foreground)] opacity-70 mb-12 max-w-[800px] mx-auto">
+          Deterministic analysis of your website's conversion blockers thats costing you revenue<br></br>
+          No bs ! just fixable insights based on proven UX principles.
         </p>
 
         <form
