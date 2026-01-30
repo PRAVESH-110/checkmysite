@@ -48,7 +48,7 @@ export default function Navbar() {
         <ul className="flex gap-3 md:gap-8 list-none m-0 p-0">
           <li>
             <Link href="/pricing" className="text-[var(--foreground)] text-xs md:text-[0.95rem] font-medium opacity-80 decoration-0 transition-all duration-200 hover:opacity-100 hover:-translate-y-[1px]">
-              Pricing
+              Plans
             </Link>
           </li>
           <li>

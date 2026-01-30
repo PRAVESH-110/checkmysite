@@ -18,7 +18,9 @@ export default function Home() {
 
   const calculateBreakdown = (result: any) => {
     if (!result || !result.signals) return { cta: 0, mobile: 0, speed: 0, trust: 0 };
-    const { signals } = result;
+
+    // Handle new nested structure (result.signals.signals) vs legacy (result.signals)
+    const signals = result.signals.signals || result.signals;
 
     // CTA
     let cta = 0;

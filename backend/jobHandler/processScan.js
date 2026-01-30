@@ -1,6 +1,10 @@
 import { Scan } from "../model/model.scan.js";
-import homepageAnalyzer from "../analyzers/homepageAnalyzer.js";
+import { User } from "../model/model.user.js";
+import basicAnalyzer from "../analyzers/basicAnalyzer.js";
+import advancedAnalyzer from "../analyzers/advancedAnalyzer.js";
 import computeScore from "../scoring/computeScore.js";
+import scoreLegacy from "../scoring/scoreLegacy.js";
+import { runLighthouse } from "../workers/services/runLighthouse.js";
 
 async function processScan(scanId) {
   let scan;
@@ -13,6 +17,17 @@ async function processScan(scanId) {
       { new: true }
     );
     if (!scan) return;
+
+    // Fetch user to determine plan
+    let isPremium = false;
+    if (scan.userId) {
+      try {
+        const user = await User.findById(scan.userId);
+        isPremium = user && (user.plan === 'basic' || user.plan === 'pro');
+      } catch (uErr) {
+        console.warn("Could not fetch user for scan plan check:", uErr.message);
+      }
+    }
 
     // 2️⃣ Fetch website HTML safely
     const controller = new AbortController();
@@ -34,18 +49,42 @@ async function processScan(scanId) {
 
     const html = await response.text();
 
-    // 3️⃣ Analyze homepage
-    const analysis = homepageAnalyzer(html);
+    let score = 0;
+    let issues = [];
+    let savedSignals = {};
 
-    // 4️⃣ Compute score
-    const score = computeScore(analysis);
+    if (isPremium) {
+      // --- PREMIUM PATH (Lighthouse + Advanced Analysis) ---
+      const analysis = advancedAnalyzer(html);
 
-    // 5️⃣ Save results
+      // Run Lighthouse
+      try {
+        const lighthouseMetrics = await runLighthouse(scan.url);
+        analysis.performance = lighthouseMetrics;
+      } catch (lhError) {
+        console.error("Lighthouse failed:", lhError);
+        analysis.performance = null;
+      }
+
+      const result = computeScore(analysis);
+      score = result.score;
+      issues = result.issues;
+      savedSignals = analysis; // Save the full structure
+
+    } else {
+      // --- FREE PATH (Basic Cheerio Analysis + Legacy Scoring) ---
+      const analysis = basicAnalyzer(html);
+      score = scoreLegacy(analysis);
+      issues = analysis.issues; // Directly from analyzer
+      savedSignals = analysis.signals; // Save just the flags (legacy format)
+    }
+
+    // 6️⃣ Save results
     await Scan.findByIdAndUpdate(scanId, {
       status: "completed",
       score,
-      issues: analysis.issues,
-      signals: analysis.signals,
+      issues,
+      signals: savedSignals,
       completedAt: new Date()
     });
 

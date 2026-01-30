@@ -1,64 +1,64 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
-import {Scan} from "../model/model.scan.js"
-import {z} from "zod";
+import { Scan } from "../model/model.scan.js"
+import { z } from "zod";
 import processScan from "../jobHandler/processScan.js";
 import mongoose from "mongoose";
 
 
 const scanRouter = express.Router();
 
-const scanSchema= z.object({
-    url:z.string().url("invalid url"),
+const scanSchema = z.object({
+    url: z.string().url("invalid url"),
 })
 
-scanRouter.post("/",authMiddleware,async function(req,res){
-    const validatedData= scanSchema.safeParse(req.body);
+scanRouter.post("/", authMiddleware, async function (req, res) {
+    const validatedData = scanSchema.safeParse(req.body);
 
-    if(!validatedData.success){
+    if (!validatedData.success) {
         return res.status(400).json({
-            message:"invalid input",
-            errors:validatedData.error.errors
+            message: "invalid input",
+            errors: validatedData.error.errors
         })
     }
 
-    const {url}= validatedData.data;
+    const { url } = validatedData.data;
 
-    const scan=await Scan.create({
+    const scan = await Scan.create({
         userId: req.userId,
         url,
-        status:"pending",
+        status: "pending",
     })
 
     processScan(scan._id);
 
     return res.status(200).json({
-        message:"Scan created successfully",
-        scanId:scan._id,
+        message: "Scan created successfully",
+        scanId: scan._id,
         status: scan.status,
 
     })
 })
 
-scanRouter.get('/:scanId',authMiddleware,async function (req,res){
-    const scanId= req.params.scanId;
+scanRouter.get('/:scanId', authMiddleware, async function (req, res) {
+    const scanId = req.params.scanId;
 
-    if(!mongoose.Types.ObjectId.isValid(scanId)){
+    if (!mongoose.Types.ObjectId.isValid(scanId)) {
         return res.status(400).json({
-            message:"invalid scan id"
+            message: "invalid scan id"
         })
     }
 
-    const scan =await Scan.findById(scanId);
+    const scan = await Scan.findById(scanId);
 
-    if(!scan){
+    if (!scan) {
         return res.status(404).json({
-            message:"scan not found"
+            message: "scan not found"
         })
     }
-    if(scan.userId.toString() !== req.userId){
+    if (scan.userId.toString() !== req.userId) {
         return res.status(403).json({
-            message:"you are not authorized to view this scan"
+            message: "you are not authorized to view this scan"
         })
     }
     const response = {
@@ -66,19 +66,19 @@ scanRouter.get('/:scanId',authMiddleware,async function (req,res){
     };
 
     if (scan.status === "completed") {
-    response.score = scan.score;
-    response.issues = scan.issues;
-    response.signals = scan.signals;
-  }
+        response.score = scan.score;
+        response.issues = scan.issues;
+        response.signals = scan.signals;
+    }
 
-  if (scan.status === "failed") {
-    response.error = scan.error || "Scan failed";
-  }
+    if (scan.status === "failed") {
+        response.error = scan.error || "Scan failed";
+    }
 
-  // 🔴 IMPORTANT: disable caching for polling endpoint
-  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
+    // 🔴 IMPORTANT: disable caching for polling endpoint
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
 
     return res.status(200).json(response)
 })

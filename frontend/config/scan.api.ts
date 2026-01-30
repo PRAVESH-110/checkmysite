@@ -3,6 +3,11 @@ import { apiEndpoints } from "./api";
 
 export async function scanRequest(url: string) {
   const token = localStorage.getItem("token")
+
+  if (!token) {
+    throw new Error("You must be signed up to run a scan.");
+  }
+
   const response = await fetch(apiEndpoints.scan.create, {
     method: "POST",
     headers: {
@@ -14,7 +19,7 @@ export async function scanRequest(url: string) {
 
   if (!response.ok) {
     const err = await response.json();
-    throw new Error(err.message || "Failed to create scan");
+    throw new Error(err.message || "Failed to scan");
   }
 
   return response.json(); // { scanId, status }

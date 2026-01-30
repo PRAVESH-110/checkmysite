@@ -93,57 +93,39 @@ function homepageAnalyzer(html) {
   };
 
   /* -------------------------
-     ISSUES (INTERPRETATION)
+     GROUPING FOR SCORER
   ------------------------- */
 
-  const issues = [];
+  const cta = {
+    total: (hasButtonCTA ? 1 : 0) + (hasLinkCTA ? 1 : 0), // Basic count
+    hasCTA,
+    // aboveFold: ... (requires Playwright/rendering, ignoring for Cheerio)
+    texts: [] // Populate with actual text if needed
+  };
 
-  if (!signals.hasTitle) {
-    issues.push("Missing <title> tag");
-  } else if (signals.titleLength < 10 || signals.titleLength > 70) {
-    issues.push("Title length is not optimal (10–70 characters)");
-  }
+  const trust = {
+    hasTitle: signals.hasTitle,
+    hasMetaDescription: signals.hasMetaDescription,
+    hasH1: signals.hasH1,
+    hasFavicon: signals.hasFavicon,
+    hasImages: signals.hasImages,
+    hasAltText: signals.hasAltText
+  };
 
-  if (!signals.hasMetaDescription) {
-    issues.push("Missing meta description");
-  } else if (
-    signals.metaDescriptionLength < 50 ||
-    signals.metaDescriptionLength > 160
-  ) {
-    issues.push("Meta description length is not optimal (50–160 characters)");
-  }
+  const mobile = {
+    hasViewportMeta: signals.hasViewportMeta
+  };
 
-  if (!signals.hasH1) {
-    issues.push("Missing primary <h1> heading");
-  }
-
-  if (signals.multipleH1s) {
-    issues.push("Multiple <h1> tags found (can confuse SEO & users)");
-  }
-
-  if (!signals.hasCTA) {
-    issues.push("No clear call-to-action detected");
-  }
-
-  if (!signals.hasViewportMeta) {
-    issues.push("Missing viewport meta tag (mobile responsiveness issue)");
-  }
-
-  if (!signals.hasImages) {
-    issues.push("No images found (low visual engagement)");
-  }
-
-  if (signals.hasImages && !signals.hasAltText) {
-    issues.push("Images missing alt text (accessibility issue)");
-  }
-
-  if (!signals.hasFavicon) {
-    issues.push("Missing favicon (trust & branding issue)");
-  }
+  const forms = {
+    hasForm: signals.hasForm
+  };
 
   return {
-    signals,
-    issues,
+    cta,
+    trust,
+    mobile,
+    forms,
+    signals // Keep original signals for legacy or DB visibility if needed
   };
 }
 

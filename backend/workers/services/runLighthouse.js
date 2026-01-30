@@ -1,7 +1,7 @@
 // worker/services/runLighthouse.ts
 import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
-import config from '../lighthouse.config.js';
+import config from '../../lighthouse.config.js';
 
 export async function runLighthouse(url) {
   const chrome = await chromeLauncher.launch({

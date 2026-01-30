@@ -11,11 +11,11 @@ function authMiddleware(req, res, next) {
             message: "Unauthorized to access this route"
         })
     }
-    const token =authHeader.split(" ")[1];
+    const token = authHeader.split(" ")[1];
 
-    if(!token){
+    if (!token) {
         return res.status(401).json({
-            message:"Malformed authorization header"
+            message: "Malformed authorization header"
         })
     }
     console.log("AUTH HEADER:", req.headers.authorization);
@@ -27,7 +27,7 @@ function authMiddleware(req, res, next) {
     }
     catch (err) {
         res.status(401).json({
-            message: "invalid token"
+            message: "You must signup first "
         })
     }
 }
