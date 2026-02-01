@@ -9,6 +9,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
+  --font-montserrat: var(--font-montserrat);
+  --font-poppins: var(--font-poppins), sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {

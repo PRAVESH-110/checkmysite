@@ -1,6 +1,9 @@
+"use client"
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import Link from 'next/link';
 
 export default function Footer() {
+
     return (
         <footer className="w-full border-t border-black/10 bg-white/5 backdrop-blur-md pt-16 pb-8 mt-auto dark:border-white/10 dark:bg-black/20">
             <div className="max-w-7xl grid-cols-3 md:grid-cols-3 mx-auto px-8">
@@ -15,9 +18,14 @@ export default function Footer() {
                         </p>
                         <div className="flex gap-4">
                             {/* Social Placeholders */}
-                            {[1, 2, 3].map((i) => (
-                                <div key={i} className="w-8 h-8 rounded-full bg-black/5 border border-black/10 hover:bg-black/10 transition-colors cursor-pointer dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10" />
-                            ))}
+                            <Link href="https://github.com/PRAVESH-110"
+                                className="w-8 h-8 rounded-full bg-black/5 border border-black/10 hover:bg-black/10 transition-colors cursor-pointer dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10 flex items-center justify-center text-4xl"
+                            >
+                                <FaGithub />
+                            </Link>
+                            <Link href="https://www.linkedin.com/in/%20pravesh-dhakal" className="w-8 h-8 bg-black/5 border border-black/10 hover:bg-black/10 transition-colors cursor-pointer dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10 flex items-center justify-center text-4xl">
+                                <FaLinkedin />
+                            </Link>
                         </div>
                     </div>
 

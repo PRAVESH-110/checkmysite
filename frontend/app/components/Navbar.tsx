@@ -42,7 +42,7 @@ export default function Navbar() {
   return (
     <div className='flex flex-row'>
       <nav className="fixed left-1/2 -translate-x-1/2 w-[95%] md:w-[70%] gap-2 z-[600] flex justify-between align-center items-center mt-3 mx-2 px-3 md:px-5 py-1 bg-white/5 backdrop-blur-md border-white border-2 rounded-full transition-all duration-300 dark:bg-black/20 dark:border-white/10">
-        <Link href="/" className="text-lg md:text-2xl font-bold tracking-tight bg-gradient-to-br from-[#7051c3] to-[#ff70cc] bg-clip-text text-transparent decoration-0">
+        <Link href="/" className="text-lg md:text-2xl font-bold tracking-tight bg-gradient-to-br from-[#7051c3] to-[#ff70cc] bg-clip-text text-transparent decoration-0 font-montserrat">
           checkmysite
         </Link>
         <ul className="flex gap-3 md:gap-8 list-none m-0 p-0">
