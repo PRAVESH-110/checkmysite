@@ -2,8 +2,100 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { scanRequest, getScanById } from "../config/scan.api"
 import { useToast } from "./providers/ToastProvider";
+import { motion, useSpring } from "framer-motion";
 
+const sections = [
+  {
+    id: "analysis",
+    title: "Deep Analysis",
+    body:
+      "We scan your website against deterministic UI/UX rules to identify exactly what's killing your conversions.",
+  },
+  {
+    id: "scoring",
+    title: "Deterministic Scoring",
+    body:
+      "Get a concrete, unbiased conversion score. No AI hallucinations—just pure, math-based performance metrics suitable for growth.",
+  },
+  {
+    id: "fix",
+    title: "Actionable Fixes",
+    body:
+      "Don't just know what's wrong. Get a prioritized checklist of code-level fixes to boost your revenue and user engagement immediately.",
+  },
+];
 export default function Home() {
+
+  //mobile scroller anim
+  const [activeId, setActiveId] = useState(sections[0].id);
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const timelineRef = useRef<HTMLDivElement | null>(null);
+  const [sectionPositions, setSectionPositions] = useState<number[]>([]);
+
+  const dotY = useSpring(0, {
+    stiffness: 300,
+    damping: 30,
+    mass: 0.6,
+  });
+
+  useEffect(() => {
+    const measure = () => {
+      if (!timelineRef.current) return;
+
+      const timelineRect = timelineRef.current.getBoundingClientRect();
+
+      const positions = sections.map((s) => {
+        const el = sectionRefs.current[s.id];
+        if (!el) return 0;
+
+        const rect = el.getBoundingClientRect();
+        return rect.top - timelineRect.top + rect.height / 2;
+      });
+      setSectionPositions(positions);
+    };
+
+    const onScroll = () => {
+      const viewportCenter = window.innerHeight / 2;
+      const timelineRect = timelineRef.current?.getBoundingClientRect();
+
+      let closestIndex = 0;
+      let minDistance = Infinity;
+      let targetY = 0;
+
+      sections.forEach((s, i) => {
+        const el = sectionRefs.current[s.id];
+        if (!el) return;
+
+        const rect = el.getBoundingClientRect();
+        const center = rect.top + rect.height / 2;
+        const distance = Math.abs(center - viewportCenter);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = i;
+          if (timelineRect) {
+            targetY = rect.top - timelineRect.top + rect.height / 2;
+          }
+        }
+      });
+
+      setActiveId(sections[closestIndex].id);
+      dotY.set(targetY - 8);
+    };
+
+    measure();
+    // remeasure after layout settles
+    setTimeout(measure, 100);
+    onScroll();
+
+    window.addEventListener("scroll", onScroll);
+    window.addEventListener("resize", measure);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", measure);
+    };
+  }, [dotY]);
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const [scanResult, setScanResult] = useState<any>(null);
@@ -109,10 +201,10 @@ export default function Home() {
 
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-8 py-16 text-center bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,255,0.05)_0%,transparent_50%)]">
       <section className="max-w-[800px] mx-auto mb-16">
-        <h1 className="text-3xl md:text-5xl  lg:text-6xl font-black leading-[1.1] tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.7)] bg-clip-text text-transparent dark:from-white dark:to-[#aaa] py-4 font-poppins">
+        <h3 className="text-3xl md:text-5xl lg:text-6xl  tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.9)] bg-clip-text text-transparent dark:from-white dark:to-[#777] py-4 font-outfit">
           Stop Losing Customers <br />
-        </h1>
-        <h3 className="text-2xl md:text-4xl lg:text-4xl font-black leading-[1.1] mb-6 tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.7)] bg-clip-text text-transparent dark:from-white dark:to-[#aaa] font-poppins">Get Your Conversion Score</h3>
+        </h3>
+        <h3 className="text-2xl md:text-4xl lg:text-6xl font-black leading-[1.1] mb-6 tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.9)] bg-clip-text text-transparent dark:from-white dark:to-[#777] font-outfit">Get Your Conversion Score today</h3>
 
         <p className="text-xl leading-relaxed text-[var(--foreground)] opacity-70 mb-12 max-w-[800px] mx-auto ">
           Deterministic analysis of your website's conversion blockers thats costing you revenue<br></br>
@@ -139,7 +231,7 @@ export default function Home() {
           <button
             type="submit"
             disabled={loading}
-            className={`px-6 py-2 rounded-full border-0 font-semibold text-base transition-all whitespace-nowrap text-white ${loading ? 'bg-gradient-to-br from-[#625f6c] to-[#261e23] cursor-not-allowed opacity-80' : 'bg-gradient-to-br from-[#7051c3] to-[#ff70cc] cursor-pointer hover:bg-[#0051a2] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,118,255,0.3)]'}`}
+            className={`px-6 py-2 rounded-full border-0 font-semibold text-base transition-all whitespace-nowrap text-white ${loading ? 'bg-gradient-to-br from-[#625f6c] to-[#261e23] cursor-not-allowed opacity-80' : 'bg-gradient-to-br from-[#7051c3] to-[#ff70cc] cursor-pointer hover:bg-[#0051a2] hover:shadow-[0_4px_12px_rgba(0,118,255,0.3)]'}`}
           >
             {loading ? "Scanning..." : "Analyze my site"}
           </button>
@@ -254,22 +346,115 @@ export default function Home() {
         </section>
       )}
 
-      {!scanResult && !loading && (
-        <section className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 max-w-[1000px] w-full mt-5 sm:mt-5 md:mt-6 lg:mt-2 mx-auto">
-          <div className="p-8 bg-white/[0.03] border border-white/10 rounded-2xl text-left transition-transform duration-200 hover:-translate-y-1 hover:bg-white/5">
-            <h3 className="text-xl mb-2">Deterministic Scoring</h3>
-            <p className="text-[0.95rem] opacity-70 leading-normal">No random LLM guesses. Our scoring engine follows strict, repeatable heuristic rules.</p>
+      {/* Good vs Great Website Comparison */}
+      <div className="flex flex-col md:flex-row sm:flex-row gap-15  w-full max-w-6xl mx-auto mb-30 px-4 items-stretch">
+
+        {/* Good Website */}
+        <div className="flex-1 flex flex-col p-5 bg-gradient-to-b from-red-500/5 to-orange-500/5 border border-red-500/20 rounded-3xl shadow-2xl backdrop-blur-sm relative overflow-hidden group hover:border-red-500/50 hover:shadow-[0_0_40px_-10px_rgba(239,68,68,0.3)] transition-all duration-300">
+          {/* Glow Effect */}
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-red-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div className="relative w-full rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 shadow-xl bg-gray-100 dark:bg-black/50 aspect-[16/9] mb-4 group-hover:scale-[1.02] transition-transform duration-500">
+            <img src="/good.png" alt="Standard Website Example" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/5 dark:bg-white/5 pointer-events-none"></div>
           </div>
-          <div className="p-8 bg-white/[0.03] border border-white/10 rounded-2xl text-left transition-transform duration-200 hover:-translate-y-1 hover:bg-white/5">
-            <h3 className="text-xl mb-2">Deep Performance Analysis</h3>
-            <p className="text-[0.95rem] opacity-70 leading-normal">We check load times, interactivity delays, and layout shifts that kill conversions.</p>
+
+          <h3 className="text-2xl font-bold bg-gradient-to-l from-red-500 to-orange-500 bg-clip-text text-transparent mb-2 relative z-10">A Good Website</h3>
+          <p className="text-[var(--foreground)] opacity-80 leading-relaxed dark:text-gray-200">Functional and clean. It tells people what you do, but fails to compel them to take action.</p>
+        </div>
+
+        {/* Great Website */}
+        <div className="flex-1 flex flex-col p-5 bg-gradient-to-b from-emerald-500/5 to-green-500/5 border border-green-500/20 rounded-3xl shadow-2xl backdrop-blur-sm relative overflow-hidden group hover:border-green-500/50 hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.3)] transition-all duration-300">
+          {/* Glow Effect */}
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-green-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+
+          <div className="relative z-10 w-full rounded-2xl overflow-hidden border border-purple-500/20 shadow-2xl shadow-purple-900/20 bg-gray-100 dark:bg-black/50 aspect-[16/9] mb-4 group-hover:scale-[1.02] transition-transform duration-500">
+            <img src="/great.png" alt="Great Website Example" className="w-full h-full object-cover" />
           </div>
-          <div className="p-8 bg-white/[0.03] border border-white/10 rounded-2xl text-left transition-transform duration-200 hover:-translate-y-1 hover:bg-white/5">
-            <h3 className="text-xl mb-2">Actionable Fixes</h3>
-            <p className="text-[0.95rem] opacity-70 leading-normal">Get a prioritized list of specific changes to improve your conversion rate today.</p>
-          </div>
-        </section>
-      )}
-    </div>
+
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent mb-2 relative z-10">A Great Website</h3>
+          <p className="text-[var(--foreground)] opacity-80 leading-relaxed dark:text-gray-300 relative z-10">A psychological journey. Uses deterministic design patterns to trigger action and build trust instantly.</p>
+        </div>
+
+      </div>
+
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-black font-outfit md:m-10 lg:m-15 m-5"> What we do </h1>
+
+      {/* mobile scroller animation */}
+      <div className="flex max-w-6xl mx-auto px-6 py-32 gap-20">
+        {/* Timeline */}
+        <div
+          ref={timelineRef}
+          className="hidden md:flex relative w-10 justify-center"
+        >
+          <div className="absolute inset-y-0 border-l-2 border-dotted border-gray-300" />
+
+          {/* Static dots */}
+          {sections.map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-4 h-4 rounded-full border-2 border-gray-300 bg-white dark:bg-black transition-all duration-300"
+              style={{
+                top: sectionPositions[i] ? sectionPositions[i] - 8 : 0,
+                opacity: sectionPositions[i] ? 1 : 0
+              }}
+            />
+          ))}
+
+          {/* Moving dot */}
+          <motion.div
+            className="absolute w-4 h-4 rounded-full bg-green-500 shadow-[0_0_20px_4px_rgba(34,197,94,0.8)] z-10"
+            style={{ y: dotY }}
+          />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 space-y-30">
+          {sections.map((section) => (
+            <div
+              key={section.id}
+              id={section.id}
+              ref={(el) => { sectionRefs.current[section.id] = el }}
+            >
+              <motion.h2
+                className="text-4xl font-outfit "
+                animate={{
+                  color: activeId === section.id ? "#ff00e6ff" : "#e5eaf1ff",
+
+                }}
+                transition={{ duration: 0.5 }}
+              >
+                {section.title}
+              </motion.h2>
+              <p className="mt-4 text-gray-300 max-w-xl">
+                {section.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-black font-outfit md:m-10 lg:m-15 m-5"> Why us </h1>
+      {
+        !scanResult && !loading && (
+          <section className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 max-w-[1000px] w-full mt-5 sm:mt-5 md:mt-6 lg:mt-2 mx-auto">
+            <div className="p-8 bg-white/[0.03] border border-white/10 rounded-2xl text-left transition-transform duration-200 hover:-translate-y-1 hover:bg-white/5">
+              <h3 className="text-xl mb-2">Deterministic Scoring</h3>
+              <p className="text-[0.95rem] opacity-70 leading-normal">No random LLM guesses. Our scoring engine follows strict, repeatable heuristic rules.</p>
+            </div>
+            <div className="p-8 bg-white/[0.03] border border-white/10 rounded-2xl text-left transition-transform duration-200 hover:-translate-y-1 hover:bg-white/5">
+              <h3 className="text-xl mb-2">Deep Performance Analysis</h3>
+              <p className="text-[0.95rem] opacity-70 leading-normal">We check load times, interactivity delays, and layout shifts that kill conversions.</p>
+            </div>
+            <div className="p-8 bg-white/[0.03] border border-white/10 rounded-2xl text-left transition-transform duration-200 hover:-translate-y-1 hover:bg-white/5">
+              <h3 className="text-xl mb-2">Actionable Fixes</h3>
+              <p className="text-[0.95rem] opacity-70 leading-normal">Get a prioritized list of specific changes to improve your conversion rate today.</p>
+            </div>
+          </section>
+        )
+      }
+    </div >
   );
 }

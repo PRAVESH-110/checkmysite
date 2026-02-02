@@ -64,11 +64,8 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <Link href="/get-started" className="hidden md:block bg-[var(--foreground)] text-[var(--background)] px-5 py-2 my-1 rounded-full font-semibold text-sm transition-transform duration-200 shadow-sm hover:scale-105 hover:shadow-lg decoration-0">
-            Get Score
-          </Link>
-
-          {/* Mobile L Button (Inside Navbar) */}
+          <Userbtn />
+          {/* Mobile P Button (Inside Navbar) */}
           <div className="md:hidden relative z-[1000]">
             <button
               type="button"
@@ -99,9 +96,6 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
-
-      {/* Desktop L Button (Outside Navbar, Fixed Position) */}
-      <Userbtn />
     </div>
   );
 }

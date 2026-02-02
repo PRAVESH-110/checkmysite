@@ -62,7 +62,7 @@ export default function Pricing() {
     return (
         <div className="min-h-screen pt-25 pb-20 px-4 bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,255,0.05)_0%,transparent_50%)]">
             <div className="max-w-6xl mx-auto text-center">
-                <h1 className="text-5xl md:text-6xl pb-4 font-extrabold mb-6 tracking-tight bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.7)] bg-clip-text text-transparent dark:from-white dark:to-[#aaa]">
+                <h1 className="text-5xl md:text-6xl font-outfit pb-4 font-extrabold mb-6 tracking-tight bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.7)] bg-clip-text text-transparent dark:from-white dark:to-[#aaa]">
                     Simple, Transparent Pricing
                 </h1>
                 <p className="text-xl text-[var(--foreground)] opacity-70 mb-16 max-w-2xl mx-auto dark:text-white/70">

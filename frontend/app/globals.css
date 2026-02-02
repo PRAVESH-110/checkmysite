@@ -11,6 +11,7 @@
   --font-sans: var(--font-inter);
   --font-montserrat: var(--font-montserrat);
   --font-poppins: var(--font-poppins), sans-serif;
+  --font-outfit: var(--font-outfit), sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
