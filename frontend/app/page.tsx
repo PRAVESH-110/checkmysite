@@ -1,4 +1,5 @@
 'use client';
+import Link from "next/link"
 import { useState, useEffect, useMemo, useRef } from "react";
 import { scanRequest, getScanById } from "../config/scan.api"
 import { useToast } from "./providers/ToastProvider";
@@ -361,7 +362,7 @@ export default function Home() {
           </div>
 
           <h3 className="text-2xl font-bold bg-gradient-to-l from-red-500 to-orange-500 bg-clip-text text-transparent mb-2 relative z-10 ">A Good Website</h3>
-          <p className="text-[var(--foreground)] opacity-80 leading-relaxed dark:text-gray-200">Functional and clean. It tells people what you do, but fails to compel them to take action.</p>
+          <p className="text-[var(--foreground)] opacity-80 leading-relaxed dark:text-gray-200">Functional, flashy. It tells people what you do, but fails to compel them to take action.</p>
         </div>
 
         {/* Great Website */}
@@ -374,8 +375,8 @@ export default function Home() {
             <img src="/great.png" alt="Great Website Example" className="w-full h-full object-cover" />
           </div>
 
-          <h3 className="text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent mb-2 relative z-10">A Great Website</h3>
-          <p className="text-[var(--foreground)] opacity-80 leading-relaxed dark:text-gray-300 relative z-10">A psychological journey. Uses deterministic design patterns to trigger action and build trust instantly.</p>
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent mb-2 relative z-10">A Great Website</h3>
+          <p className="text-[var(--foreground)] opacity-80 leading-relaxed dark:text-gray-300 relative z-10">Simple yet elegant. Uses deterministic design patterns to trigger action and build trust instantly.</p>
         </div>
 
       </div>
@@ -421,7 +422,7 @@ export default function Home() {
               <motion.h2
                 className="text-4xl font-outfit "
                 animate={{
-                  color: activeId === section.id ? "#ff00e6ff" : "#e5eaf1ff",
+                  color: activeId === section.id ? "#eb2ad7ff" : "#e5eaf1ff",
 
                 }}
                 transition={{ duration: 0.5 }}
@@ -446,6 +447,20 @@ export default function Home() {
           </div>
         )
       }
+
+      <div className="flex justify-center my-20">
+        <Link
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="border-2 p-[10px] px-5 font-poppins rounded-[25px] text-center text-black min-w-[max-content] transition-all duration-300 ease-in-out hover:border-[#FFD700] cursor-pointer hover:shadow-[0_0_25px_rgba(255,215,0,0.6),_0_5px_15px_rgba(0,0,0,0.8)] w-fit bg-purple-500 block"
+        >
+          <h3 className="font-bold">Get started</h3>
+        </Link>
+      </div>
     </div >
+
   );
 }
