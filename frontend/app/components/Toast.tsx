@@ -6,7 +6,7 @@ export default function Toast({
   type: "success" | "error";
 }) {
   const base =
-    "fixed bottom-6 right-6 px-5 py-3 rounded-xl shadow-xl text-white font-medium transition-all";
+    "fixed bottom-6 right-6 z-[1000] px-5 py-3 rounded-xl shadow-xl text-white font-medium transition-all";
 
   const styles =
     type === "success" ? "bg-green-500" : "bg-red-500";

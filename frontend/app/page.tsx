@@ -1,11 +1,12 @@
 'use client';
 import Link from "next/link"
 import { useState, useEffect, useMemo, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { scanRequest, getScanById } from "../config/scan.api"
 import { useToast } from "./providers/ToastProvider";
 import { motion, useSpring, type Variants } from "framer-motion";
 import { WhyUsSection } from "../components/WhyUsSection";
-
+import {ArrowRight} from 'lucide-react';
 const sections = [
   {
     id: "analysis",
@@ -109,6 +110,8 @@ export default function Home() {
 
   const { showToast } = useToast();
   const hasNotifiedRef = useRef(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const calculateBreakdown = (result: any) => {
     if (!result || !result.signals) return { cta: 0, mobile: 0, speed: 0, trust: 0 };
@@ -156,9 +159,11 @@ export default function Home() {
       setLoading(true);
       setError("");
       setScanResult(null);
+      hasNotifiedRef.current = false;
       const startScan = await scanRequest(inputUrl);
       const id = startScan.scanId;
       setScanId(id);
+      router.replace(`/?scanId=${id}`);
       // Polling is handled by useEffect
     } catch (err: any) {
       setLoading(false);
@@ -168,6 +173,7 @@ export default function Home() {
     }
   }
 
+
   function getBarColor(score: number) {
     if (score > 90) return "bg-green-500";
     if (score < 50) return "bg-red-500";
@@ -175,10 +181,30 @@ export default function Home() {
   }
 
 
+  // Rehydrate from URL scanId (and cache if available)
+  useEffect(() => {
+    const urlScanId = searchParams.get("scanId");
+    if (urlScanId && urlScanId !== scanId) {
+      setScanId(urlScanId);
+      const cached = sessionStorage.getItem(`scan:${urlScanId}`);
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          setScanResult(parsed);
+          setLoading(false);
+          hasNotifiedRef.current = true;
+          return;
+        } catch {
+          sessionStorage.removeItem(`scan:${urlScanId}`);
+        }
+      }
+      setLoading(true);
+    }
+  }, [searchParams, scanId]);
+
   // Polling Effect
   useEffect(() => {
     if (!scanId) return;
-    const token = localStorage.getItem("token") || "";
 
     const intervalId = setInterval(async () => {
       try {
@@ -188,7 +214,8 @@ export default function Home() {
           setScanResult(result);
           setLoading(false);
           showToast("Scan completed successfully", "success");
-          setScanId(""); // Stop polling
+          sessionStorage.setItem(`scan:${scanId}`, JSON.stringify(result));
+          hasNotifiedRef.current = true;
           clearInterval(intervalId);
         }
 
@@ -196,7 +223,6 @@ export default function Home() {
           hasNotifiedRef.current = true;
           setError(result.error || "Scan failed");
           setLoading(false);
-          setScanId("");
           clearInterval(intervalId);
         }
       } catch (err) {
@@ -259,6 +285,7 @@ export default function Home() {
           >
             {loading ? "Scanning..." : "Analyze my site"}
           </button>
+          <i className="fa-solid fa-arrow-right arrow hidden md:block"></i>
         </form>
         {error && <p className="text-red-500 font-medium">{error}</p>}
       </section>
@@ -334,7 +361,15 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <h4 className='mt-7 text-gray-300 text-sm'>Please note that this data does not represent complete website scan, but just the UI/UX analysis. For a detailed deterministic scan check plans</h4>
+              <h4 className="mt-7 text-gray-300 text-sm">
+                This is a free UI/UX snapshot, not a full deterministic scan.{" "} <br></br>
+                <Link
+                  href="/pricing"
+                  className="font-semibold text-[#e386c2]  decoration-2 hover:text-[#ff70cc] transition-colors"
+                >
+                  Unlock the complete scan and fixes by upgrading to a paid plan.
+                </Link>
+              </h4>
             </div>
           </div>
 
@@ -462,13 +497,10 @@ export default function Home() {
 
       {/* why chose us */}
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-black font-outfit md:m-10 lg:m-15 m-5"> Why chose us ?</h1>
-      {
-        !scanResult && !loading && (
+      
           <div className="w-full max-w-7xl mx-auto mt-10 mb-32 relative">
             <WhyUsSection />
           </div>
-        )
-      }
 
       <div className="flex justify-center my-20">
         <Link
