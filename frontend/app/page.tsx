@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useState, useEffect, useMemo, useRef } from "react";
 import { scanRequest, getScanById } from "../config/scan.api"
 import { useToast } from "./providers/ToastProvider";
-import { motion, useSpring } from "framer-motion";
+import { motion, useSpring, type Variants } from "framer-motion";
 import { WhyUsSection } from "../components/WhyUsSection";
 
 const sections = [
@@ -141,6 +141,16 @@ export default function Home() {
 
   const breakdown = useMemo(() => calculateBreakdown(scanResult), [scanResult]);
 
+  const heroHeading: Variants = {
+    hidden: { opacity: 0, y: 20, filter: "blur(6px)" },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { duration: 0.7, ease: "easeOut" as const },
+    },
+  };
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
@@ -203,10 +213,22 @@ export default function Home() {
 
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-8 py-16 text-center bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,255,0.05)_0%,transparent_50%)]">
       <section className="max-w-[800px] mx-auto mb-16">
-        <h3 className="text-3xl md:text-5xl lg:text-6xl  tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.9)] bg-clip-text text-transparent dark:from-white dark:to-[#777] py-4 font-outfit">
-          Stop Losing Customers <br />
-        </h3>
-        <h3 className="text-2xl md:text-4xl lg:text-6xl font-black leading-[1.1] mb-6 tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.9)] bg-clip-text text-transparent dark:from-white dark:to-[#777] font-outfit">Get Your Conversion Score today</h3>
+        <motion.h3
+          variants={heroHeading}
+          initial="hidden"
+          animate="visible"
+          className="text-3xl md:text-5xl lg:text-6xl tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.9)] bg-clip-text text-transparent dark:from-white dark:to-[#adacac] py-4 font-outfit"
+        >
+          Stop Losing Customers
+        </motion.h3>
+        <motion.h3
+          variants={heroHeading}
+          initial="hidden"
+          animate="visible"
+          className="text-2xl md:text-4xl lg:text-6xl font-black leading-[1.1] mb-6 tracking-tighter bg-gradient-to-b from-[var(--foreground)] to-[rgba(var(--foreground),0.9)] bg-clip-text text-transparent dark:from-white dark:to-[#777] font-outfit"
+        >
+          Get Your Conversion Score today
+        </motion.h3>
 
         <p className="text-xl leading-relaxed text-[var(--foreground)] opacity-70 mb-12 max-w-[800px] mx-auto ">
           Deterministic analysis of your website's conversion blockers thats costing you revenue<br></br>
@@ -381,7 +403,7 @@ export default function Home() {
 
       </div>
 
-      <h1 className="text-3xl md:text-4xl lg:text-5xl font-black font-outfit md:m-10 lg:m-15 m-5"> What we do </h1>
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-black font-outfit md:m-10 lg:m-15 m-5"> What we do ?</h1>
 
       {/* mobile scroller animation */}
       <div className="flex max-w-6xl mx-auto px-6 py-32 gap-20">

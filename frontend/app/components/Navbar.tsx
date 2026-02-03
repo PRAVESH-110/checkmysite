@@ -1,6 +1,7 @@
 "use client"
 import Link from 'next/link';
-import React, { useState, useRef, useEffect } from "react"
+import { usePathname } from "next/navigation";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
 import { useAuth } from "../../context/AuthContext";
 import SignIn from "../@modal/signin/page";
 import { useToast } from "../providers/ToastProvider";
@@ -13,6 +14,21 @@ export default function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
   const { showToast } = useToast();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  const isActive = (href: string) => pathname === href;
+  const navListRef = useRef<HTMLUListElement>(null);
+  const navLinkRefs = useRef<Array<HTMLAnchorElement | null>>([]);
+  const [activeBar, setActiveBar] = useState<{ left: number; width: number; visible: boolean }>({
+    left: 0,
+    width: 0,
+    visible: false,
+  });
+  const navLinks = [
+    { href: "/pricing", label: "Plans" },
+    { href: "/about", label: "About Us" },
+    { href: "/contact", label: "Contact" },
+  ];
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -38,6 +54,35 @@ export default function Navbar() {
     };
   }, [open]);
 
+  useLayoutEffect(() => {
+    const updateActiveBar = () => {
+      const listEl = navListRef.current;
+      if (!listEl) {
+        setActiveBar({ left: 0, width: 0, visible: false });
+        return;
+      }
+
+      const activeIndex = navLinks.findIndex((link) => isActive(link.href));
+      const activeEl = navLinkRefs.current[activeIndex];
+      if (!activeEl) {
+        setActiveBar({ left: 0, width: 0, visible: false });
+        return;
+      }
+
+      const listRect = listEl.getBoundingClientRect();
+      const activeRect = activeEl.getBoundingClientRect();
+      const left = activeRect.left - listRect.left;
+      setActiveBar({ left, width: activeRect.width, visible: true });
+    };
+
+    const raf = requestAnimationFrame(updateActiveBar);
+    window.addEventListener("resize", updateActiveBar);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", updateActiveBar);
+    };
+  }, [pathname]);
+
 
   return (
     <div className='flex flex-row'>
@@ -45,22 +90,28 @@ export default function Navbar() {
         <Link href="/" className="text-lg md:text-2xl font-bold tracking-tight bg-gradient-to-br from-[#7051c3] to-[#ff70cc] bg-clip-text text-transparent decoration-0 font-montserrat">
           checkmysite
         </Link>
-        <ul className="flex gap-3 md:gap-8 list-none m-0 p-0">
-          <li>
-            <Link href="/pricing" className="text-[var(--foreground)] text-xs md:text-[0.95rem] font-medium opacity-80 decoration-0 transition-all duration-200 hover:opacity-100 hover:-translate-y-[1px]">
-              Plans
-            </Link>
-          </li>
-          <li>
-            <Link href="/about" className="text-[var(--foreground)] text-xs md:text-[0.95rem] font-medium opacity-80 decoration-0 transition-all duration-200 hover:opacity-100 hover:-translate-y-[1px]">
-              About Us
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" className="text-[var(--foreground)] text-xs md:text-[0.95rem] font-medium opacity-80 decoration-0 transition-all duration-200 hover:opacity-100 hover:-translate-y-[1px]">
-              Contact
-            </Link>
-          </li>
+        <ul ref={navListRef} className="relative flex gap-3 md:gap-8 list-none m-0 p-0 pb-2">
+          {navLinks.map((link, index) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                ref={(el) => {
+                  navLinkRefs.current[index] = el;
+                }}
+                className="relative inline-flex flex-col items-center text-[var(--foreground)] text-xs md:text-[0.95rem] font-medium opacity-80 decoration-0 transition-all duration-200 hover:opacity-100 hover:-translate-y-[1px]"
+              >
+                <span>{link.label}</span>
+              </Link>
+            </li>
+          ))}
+          <span
+            className={`pointer-events-none absolute bottom-0 h-[2px] rounded-full bg-gradient-to-r from-[#7051c3] to-[#ff70cc] transition-[transform,opacity] duration-300 ease-out`}
+            style={{
+              transform: `translateX(${activeBar.left}px)`,
+              width: `${activeBar.width}px`,
+              opacity: activeBar.visible ? 1 : 0,
+            }}
+          />
         </ul>
 
         <div className="flex items-center gap-2">

@@ -68,7 +68,7 @@ export default function Contact() {
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        placeholder="John Doe"
+                                        placeholder="Pravesh Dh"
                                         required
                                         className="w-full px-5 py-4 rounded-xl border border-gray-200 dark:border-[#222] bg-gray-50 dark:bg-[#0f0f0f] text-gray-900 dark:text-white outline-none focus:border-[#7051c3] focus:ring-4 focus:ring-[#7051c3]/10 transition-all font-outfit placeholder:text-gray-400 group-hover:border-gray-300 dark:group-hover:border-[#333]"
                                     />
@@ -82,7 +82,7 @@ export default function Contact() {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        placeholder="john@example.com"
+                                        placeholder="pravesh@example.com"
                                         required
                                         className="w-full px-5 py-4 rounded-xl border border-gray-200 dark:border-[#222] bg-gray-50 dark:bg-[#0f0f0f] text-gray-900 dark:text-white outline-none focus:border-[#7051c3] focus:ring-4 focus:ring-[#7051c3]/10 transition-all font-outfit placeholder:text-gray-400 group-hover:border-gray-300 dark:group-hover:border-[#333]"
                                     />
@@ -154,7 +154,7 @@ export default function Contact() {
                 <div className="w-full md:w-2/5 bg-gradient-to-br from-[#120b1e] via-[#1a0f2e] to-[#0f0518] p-8 md:p-14 flex flex-col justify-between relative overflow-hidden text-white border-l border-white/5">
 
                     {/* Decorative Background Elements */}
-                    <div className="absolute top-[-20%] right-[-10%] w-96 h-96 rounded-full bg-[#7051c3]/20 blur-[100px] pointer-events-none"></div>
+                    <div className="absolute top-[-20%] right-[-10%] w-98 h-96 rounded-full bg-[#7051c3]/20 blur-[100px] pointer-events-none"></div>
                     <div className="absolute bottom-[-10%] left-[-20%] w-80 h-80 rounded-full bg-[#ff70cc]/10 blur-[80px] pointer-events-none"></div>
                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
 
@@ -195,14 +195,13 @@ export default function Contact() {
                         <p className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-5">Socials</p>
                         <div className="flex gap-3">
                             {[
-                                { name: "Twitter", icon: <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-12.7 12.5 4 2 12.4-2.2 9.3-11.4 3-2 .9-5.1.9-5.1z" /> },
-                                { name: "LinkedIn", icon: <><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></> },
-                                { name: "Instagram", icon: <><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></> },
-                                { name: "GitHub", icon: <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" /> }
+                                { name: "LinkedIn",href:"https://www.linkedin.com/in/pravesh-dhakal/", icon: <><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></> },
+                                { name: "Instagram", href:"https://www.instagram.com/p.r.a.v.e.s.h_11/", icon: <><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></> },
+                                { name: "GitHub", href:"https://github.com/PRAVESH-110", icon: <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" /> }
                             ].map((social, i) => (
                                 <a
                                     key={i}
-                                    href="#"
+                                    href={social.href}
                                     className="w-11 h-11 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-white/10 hover:text-white hover:border-[#7051c3]/50 transition-all hover:scale-105 active:scale-95 group"
                                     aria-label={social.name}
                                 >

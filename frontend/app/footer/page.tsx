@@ -13,7 +13,7 @@ export default function Footer() {
                         <Link href="/" className="text-2xl font-bold tracking-tight  bg-gradient-to-br from-[#7051c3] to-[#ff70cc] bg-clip-text text-transparent decoration-0 mb-4 block">
                             checkmysite
                         </Link>
-                        <p className="text-sm text-[var(--foreground)] opacity-60 leading-relaxed mb-6 dark:text-gray-400">
+                        <p className="text-sm text-[var(--foreground)] opacity-60 leading-relaxed mb-6 dark:text-gray-200">
                             Deterministic conversion scoring for modern SaaS. Stop guessing and start converting.
                         </p>
                         <div className="flex gap-4">
@@ -23,7 +23,7 @@ export default function Footer() {
                             >
                                 <FaGithub />
                             </Link>
-                            <Link href="https://www.linkedin.com/in/%20pravesh-dhakal" className="w-8 h-8 bg-black/5 border border-black/10 hover:bg-black/10 transition-colors cursor-pointer dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10 flex items-center justify-center text-4xl">
+                            <Link href="https://www.linkedin.com/in/pravesh-dhakal" className="w-8 h-8 bg-black/5 border border-black/10 hover:bg-black/10 transition-colors cursor-pointer dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10 flex items-center justify-center text-4xl">
                                 <FaLinkedin />
                             </Link>
                         </div>
@@ -35,10 +35,9 @@ export default function Footer() {
                         <div>
                             <h4 className="font-semibold text-[var(--foreground)] mb-6 dark:text-white">Product</h4>
                             <ul className="flex flex-col gap-3">
-                                <li><Link href="/features" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Features</Link></li>
-                                <li><Link href="/pricing" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Pricing</Link></li>
-                                <li><Link href="/get-started" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Get Score</Link></li>
-                                <li><Link href="/docs" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Documentation</Link></li>
+                                <li><Link href="/#analysis" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-200 hover:text-[#FF6B6B]">Features</Link></li>
+                                <li><Link href="/pricing" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-200 hover:text-[#FF6B6B]">Pricing</Link></li>
+                                <li><Link href="/" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-200 hover:text-[#FF6B6B]">Get Score</Link></li>
                             </ul>
                         </div>
 
@@ -46,31 +45,32 @@ export default function Footer() {
                         <div>
                             <h4 className="font-semibold text-[var(--foreground)] mb-6 dark:text-white">Company</h4>
                             <ul className="flex flex-col gap-3">
-                                <li><Link href="/about" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">About Us</Link></li>
-                                <li><Link href="/contact" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Contact</Link></li>
-                                <li><Link href="/blog" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Blog</Link></li>
-                                <li><Link href="/careers" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Careers</Link></li>
+                                <li><Link href="/about" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-200 hover:text-[#FF6B6B]">About Us</Link></li>
+                                <li><Link href="/contact" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-200 hover:text-[#FF6B6B]">Contact</Link></li>
                             </ul>
                         </div>
 
-                        {/* Column 3: Legal */}
+                        {/* Copyright */}
                         <div>
-                            <h4 className="font-semibold text-[var(--foreground)] mb-6 dark:text-white">Legal</h4>
-                            <ul className="flex flex-col gap-3">
-                                <li><Link href="/privacy" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Privacy Policy</Link></li>
-                                <li><Link href="/terms" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Terms of Service</Link></li>
-                                <li><Link href="/cookies" className="text-sm text-[var(--foreground)] opacity-60 hover:opacity-100 transition-opacity dark:text-gray-400 hover:text-[#FF6B6B]">Cookie Policy</Link></li>
-                            </ul>
+                            <h4 className="font-semibold text-[var(--foreground)] mb-6 dark:text-white">Copyright</h4>
+                            <p className="text-sm text-[var(--foreground)] opacity-60 leading-relaxed dark:text-gray-200">
+                                © {new Date().getFullYear()} chechmysite Inc. All rights reserved.
+                            </p>
+                            <p className="mt-3 text-xs text-[var(--foreground)] opacity-50 leading-relaxed dark:text-gray-200">
+                                CheckMySite and its logos are trademarks of checkmysite Inc.
+                            </p>
                         </div>
+
+                    
                     </div>
                 </div>
 
                 <div className="pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4 dark:border-white/5">
-                    <p className="text-xs text-[var(--foreground)] opacity-40 dark:text-gray-500">
-                        © {new Date().getFullYear()} Webolution Inc. All rights reserved.
+                    <p className="text-xs text-[var(--foreground)] opacity-40 dark:text-gray-200">
+                        © {new Date().getFullYear()} chechmysite Inc. All rights reserved.
                     </p>
                     <div className="flex gap-6">
-                        <span className="text-xs text-[var(--foreground)] opacity-40 flex items-center gap-2 dark:text-gray-500">
+                        <span className="text-xs text-[var(--foreground)] opacity-40 flex items-center gap-2 dark:text-gray-200">
                             <span className="w-2 h-2 rounded-full bg-green-500"></span>
                             All Systems Operational
                         </span>

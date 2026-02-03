@@ -37,7 +37,7 @@ async function processScan(scanId) {
       redirect: "follow",
       signal: controller.signal,
       headers: {
-        "User-Agent": "WebolutionBot/1.0"
+        "User-Agent": "chechmysiteBot/1.0"
       }
     });
 

@@ -25,7 +25,10 @@ export const WhyUsSection = () => {
                     { title: "Trust Gaps", icon: <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12v4.7c0 4.67-3.13 8.96-7 10.16-3.87-1.2-7-5.49-7-10.16v-4.7l7-3.12z" />, desc: "Boost credibility instantly" },
                     { title: "Confusing Copy", icon: <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />, desc: "Clear text that converts" },
                 ].map((item, i) => (
-                    <div key={i} className="p-6 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-md shadow-xl flex flex-col items-center text-center">
+                    <div
+                        key={i}
+                        className="w-32 h-32 p-4 rounded-full bg-black shadow-[0_0_25px_rgba(255,112,204,0.6),_0_0_50px_rgba(112,81,195,0.45)] flex flex-col items-center justify-center text-center transition-transform duration-300 hover:-translate-y-1"
+                    >
                         <div className="w-10 h-10 mb-3 text-[#ff70cc]">
                             <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">{item.icon}</svg>
                         </div>
@@ -35,7 +38,7 @@ export const WhyUsSection = () => {
             </div>
 
             {/* Desktop Orbit View (>= lg) */}
-            <div className="hidden lg:flex absolute inset-0 items-center justify-center overflow-hidden">
+            <div className="hidden lg:flex absolute inset-0 items-center justify-center overflow-visible">
 
                 {/* Center Static Content */}
                 <div className="absolute z-20 text-center max-w-md px-4 pointer-events-none">
@@ -83,7 +86,7 @@ export const WhyUsSection = () => {
                                 }}
                             >
                                 <div
-                                    className="p-6 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-md shadow-xl flex flex-col items-center text-center group hover:border-[#7051c3]/50 transition-colors cursor-pointer"
+                                    className="w-40 h-40 p-5 rounded-full bg-black shadow-[0_0_30px_rgba(255,112,204,0.6),_0_0_60px_rgba(112,81,195,0.45)] flex flex-col items-center justify-center text-center group transition-transform duration-300 hover:-translate-y-1 cursor-pointer"
                                     style={{
                                         animation: "spin-slow 60s linear infinite reverse",
                                         animationPlayState: isPaused ? "paused" : "running"
