@@ -26,6 +26,7 @@
     "middleware": "^1.0.0",
     "mongoose": "^9.1.2",
     "nodemon": "^3.1.11",
+    "razorpay": "^2.9.6",
     "zod": "^4.3.5"
   }
 }
