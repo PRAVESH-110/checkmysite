@@ -3,7 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, Suspense, useEffect } from "react";
 import { apiEndpoints } from "../../config/api";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { useToast } from "../providers/ToastProvider"; // Optional: Use if you want toast notifications
 

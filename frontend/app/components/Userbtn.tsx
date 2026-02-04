@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useRef, useEffect } from "react";
 import Link from 'next/link';
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { useToast } from "../providers/ToastProvider";
 
 export default function Userbtn() {
