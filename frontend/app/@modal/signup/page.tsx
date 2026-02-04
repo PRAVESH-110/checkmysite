@@ -4,7 +4,7 @@ import Modal from '@/app/components/Modal';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { signupRequest } from '../../../config/auth.api';
 
 export default function SignUp() {

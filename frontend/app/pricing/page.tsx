@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Pricing() {
     const { isAuthenticated } = useAuth();

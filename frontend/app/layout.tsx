@@ -3,7 +3,7 @@ import { Inter, Montserrat, Poppins, Outfit } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./footer/page";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider } from "../context/AuthContext";
 import { ToastProvider } from "./providers/ToastProvider"
 
 const inter = Inter({
