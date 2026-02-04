@@ -6,7 +6,7 @@ import { scanRequest, getScanById } from "../config/scan.api"
 import { useToast } from "./providers/ToastProvider";
 import { motion, useSpring, type Variants } from "framer-motion";
 import { WhyUsSection } from "../components/WhyUsSection";
-import {ArrowRight} from 'lucide-react';
+import { ArrowDown } from "lucide-react";
 const sections = [
   {
     id: "analysis",
@@ -238,6 +238,14 @@ export default function Home() {
     //use font inter
 
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-8 py-16 text-center bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,255,0.05)_0%,transparent_50%)]">
+      <style>
+        {`
+        @keyframes arrow-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(6px); }
+        }
+        `}
+      </style>
       <section className="max-w-[800px] mx-auto mb-16">
         <motion.h3
           variants={heroHeading}
@@ -260,6 +268,20 @@ export default function Home() {
           Deterministic analysis of your website's conversion blockers thats costing you revenue<br></br>
           No bs ! just fixable insights based on proven UX principles.
         </p>
+
+        <div
+          className="flex justify-center m-5"
+          style={{ animation: "arrow-float 1s ease-in-out infinite" }}
+        >
+          <div style={{ transform: "scaleY(1.8)" }}>
+            <ArrowDown
+              strokeWidth={3}
+              className="text-white/85"
+              style={{ width: 24, height: 60 }}
+              aria-hidden="true"
+            />
+          </div>
+        </div>
 
         <form
           className="flex gap-4 max-w-[500px] mx-auto w-full mb-8"
@@ -285,7 +307,6 @@ export default function Home() {
           >
             {loading ? "Scanning..." : "Analyze my site"}
           </button>
-          <i className="fa-solid fa-arrow-right arrow hidden md:block"></i>
         </form>
         {error && <p className="text-red-500 font-medium">{error}</p>}
       </section>
