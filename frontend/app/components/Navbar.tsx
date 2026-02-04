@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react"
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import SignIn from "../@modal/signin/page";
 import { useToast } from "../providers/ToastProvider";
 import Userbtn from './Userbtn';
