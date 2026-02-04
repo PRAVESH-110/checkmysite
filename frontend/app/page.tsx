@@ -1,6 +1,6 @@
 'use client';
 import Link from "next/link"
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { scanRequest, getScanById } from "../config/scan.api"
 import { useToast } from "./providers/ToastProvider";
@@ -27,7 +27,7 @@ const sections = [
       "Don't just know what's wrong. Get a prioritized checklist of code-level fixes to boost your revenue and user engagement immediately.",
   },
 ];
-export default function Home() {
+function HomeClient() {
 
   //mobile scroller anim
   const [activeId, setActiveId] = useState(sections[0].id);
@@ -537,5 +537,13 @@ export default function Home() {
       </div>
     </div >
 
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeClient />
+    </Suspense>
   );
 }
