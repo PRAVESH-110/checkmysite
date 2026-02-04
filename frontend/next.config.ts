@@ -2,15 +2,13 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
-  outputFileTracingRoot: __dirname,
-  webpack: (config) => {
-    config.resolve = config.resolve || {};
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
+  turbopack: {
+    root: __dirname,
+    resolveAlias: {
       "@": path.resolve(__dirname),
-    };
-    return config;
+    },
   },
+  outputFileTracingRoot: __dirname,
 };
 
 export default nextConfig;
