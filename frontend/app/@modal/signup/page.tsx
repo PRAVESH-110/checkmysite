@@ -27,9 +27,9 @@ export default function SignUp() {
                 formData.get("fname") as string,
                 formData.get("lname") as string
             )
-            // if (data.token) {
-            //     login(data.token); 
-            // }
+            if (data.token && data.user) {
+                login(data.token, data.user);
+            }
             router.back();
         }
         catch (err: any) {
