@@ -43,14 +43,27 @@ userRouter.post('/signup', async function (req, res) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await User.create({
+    const newUser = await User.create({
         email: email,
         password: hashedPassword,
         fname: fname,
         lname: lname
     })
+
+    const token = jwt.sign(
+        { id: newUser._id },
+        process.env.JWT_SECRET,
+        { expiresIn: "24h" }
+    );
+
     return res.status(201).json({
         message: "user created",
+        token: token,
+        user: {
+            fname: newUser.fname,
+            lname: newUser.lname,
+            email: newUser.email
+        }
     })
 
 })
