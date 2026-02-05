@@ -237,7 +237,7 @@ function HomeClient() {
   return (
     //use font inter
 
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-8 py-16 text-center bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,255,0.05)_0%,transparent_50%)]">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 pt-32 pb-16 text-center bg-[radial-gradient(circle_at_50%_50%,rgba(100,100,255,0.05)_0%,transparent_50%)]">
       <style>
         {`
         @keyframes arrow-float {
@@ -284,7 +284,7 @@ function HomeClient() {
         </div>
 
         <form
-          className="flex gap-4 max-w-[500px] mx-auto w-full mb-8"
+          className="flex flex-col sm:flex-row gap-4 max-w-[500px] mx-auto w-full mb-8"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
@@ -303,7 +303,7 @@ function HomeClient() {
           <button
             type="submit"
             disabled={loading}
-            className={`px-6 py-2 rounded-full border-0 font-semibold text-base transition-all whitespace-nowrap text-white ${loading ? 'bg-gradient-to-br from-[#625f6c] to-[#261e23] cursor-not-allowed opacity-80' : 'bg-gradient-to-br from-[#7051c3] to-[#ff70cc] cursor-pointer hover:bg-[#0051a2] hover:shadow-[0_4px_12px_rgba(0,118,255,0.3)]'}`}
+            className={`w-full sm:w-auto px-6 py-4 sm:py-2 rounded-full border-0 font-semibold text-base transition-all whitespace-nowrap text-white ${loading ? 'bg-gradient-to-br from-[#625f6c] to-[#261e23] cursor-not-allowed opacity-80' : 'bg-gradient-to-br from-[#7051c3] to-[#ff70cc] cursor-pointer hover:bg-[#0051a2] hover:shadow-[0_4px_12px_rgba(0,118,255,0.3)]'}`}
           >
             {loading ? "Scanning..." : "Analyze my site"}
           </button>
