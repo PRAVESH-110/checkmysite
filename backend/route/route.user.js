@@ -47,8 +47,7 @@ userRouter.post('/signup', async function (req, res) {
         email: email,
         password: hashedPassword,
         fname: fname,
-        lname: lname,
-        plan
+        lname: lname
     })
     return res.status(201).json({
         message: "user created",
