@@ -121,26 +121,65 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setOpen(!open)}
-              className={`z-[1001] relative flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm shadow-md transition-all duration-300 border-[1.5px]
+              className={`z-[1001] relative flex items-center justify-center w-9 h-9 md:w-8 md:h-8 rounded-full font-bold text-sm shadow-md transition-all duration-300 border border-white/20
                 ${open ? 'ring-2 ring-purple-400 scale-105' : 'active:scale-95'}
-                bg-gradient-to-br from-[#7051c3] to-[#ff70cc] border-white/20 text-white
+                bg-gradient-to-br from-[#7051c3] to-[#ff70cc] text-white
               `}
             >
-              {isAuthenticated && user?.fname ? user.fname.charAt(0).toUpperCase() : (
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+              {isAuthenticated && user?.fname ? (
+                user.fname.charAt(0).toUpperCase()
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
               )}
             </button>
             {/* Mobile Dropdown */}
             {open && (
-              <div className="absolute right-[-10px] top-full mt-2 w-40 rounded-xl bg-white shadow-lg border border-gray-200 overflow-hidden z-[1002]">
+              <div className="absolute right-0 top-full mt-3 w-48 rounded-xl bg-white/90 dark:bg-[#0f0f0f]/95 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] ring-1 ring-white/10 overflow-hidden z-[1002] animate-in fade-in slide-in-from-top-2 duration-200 origin-top-right p-1.5">
                 {!isAuthenticated ? (
-                  <Link href="/signin" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}>Login/ Sign Up</Link>
+                  <div className="flex flex-col gap-1">
+                    <div className="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider opacity-80">
+                      Account
+                    </div>
+                    <Link
+                      href="/signin"
+                      className="flex items-center px-3 py-2 text-sm font-semibold text-gray-700 dark:text-white rounded-lg hover:bg-purple-500/10 hover:text-purple-500 transition-colors"
+                      onClick={() => setOpen(false)}
+                    >
+                      <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>
+                      Login
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="flex items-center justify-center px-3 py-2 mt-1 text-sm font-bold text-white bg-gradient-to-r from-[#7051c3] to-[#ff70cc] rounded-lg shadow-md hover:opacity-90 transition-opacity"
+                      onClick={() => setOpen(false)}
+                    >
+                      Get Started
+                    </Link>
+                  </div>
                 ) : (
-                  <button onClick={() => {
-                    logout();
-                    setOpen(false);
-                    showToast("Successfully logged out!", "success");
-                  }} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</button>
+                  <div className="flex flex-col gap-1">
+                    <div className="px-3 py-2 border-b border-black/5 dark:border-white/5 mb-1">
+                      <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user?.fname}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
+                    </div>
+                    <Link
+                      href="/settings"
+                      onClick={() => setOpen(false)}
+                      className="flex items-center px-3 py-2 text-sm text-gray-600 dark:text-gray-300 rounded-lg hover:bg-black/5 dark:hover:bg-white/10"
+                    >
+                      Settings
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setOpen(false);
+                        showToast("Successfully logged out!", "success");
+                      }}
+                      className="flex items-center w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 )}
               </div>
             )}

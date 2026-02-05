@@ -16,7 +16,7 @@ export const WhyUsSection = () => {
             </style>
 
             {/* Mobile/Tablet Grid View (< lg) */}
-            <div className="grid grid-cols-2 gap-4 px-4 w-full lg:hidden z-10">
+            <div className="grid grid-cols-2 gap-4 px-4 w-full lg:hidden z-10 place-items-center">
                 {[
                     { title: "Subjective Debates", icon: <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zM12 6a1 1 0 0 0-1 1v5a1 1 0 0 0 .29.71l3 3a1 1 0 0 0 1.42-1.42l-2.5-2.5V7a1 1 0 0 0-1-1z" />, desc: "Stop arguing over opinions" },
                     { title: "Mystery Drop-offs", icon: <path d="M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9zM12 3a9 9 0 0 0-9 9 9 9 0 0 0 9 9 9 9 0 0 0 9-9 9 9 0 0 0-9-9zm1.7 13.3a1 1 0 1 1-1.4-1.4 1 1 0 0 1 1.4 1.4zm0-4a1 1 0 1 1-1.4 0V8a1 1 0 1 1 1.4 0z" />, desc: "Find out where they leave" },
@@ -56,7 +56,7 @@ export const WhyUsSection = () => {
 
                 {/* Orbiting Ring */}
                 <div
-                    
+
                     className="relative w-[300px] h-[700px] rounded-full border border-white/5 flex items-center justify-center"
                     style={{
                         animation: "spin-slow 60s linear infinite",
@@ -69,7 +69,7 @@ export const WhyUsSection = () => {
                         { title: "Mobile Neglect", icon: <path d="M16 2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-4 17a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm4-3H8V4h8z" />, desc: "Fix phone-only broken UX" },
                         { title: "Slow Load Times", icon: <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14a1 1 0 0 1-2 0v-5a1 1 0 0 1 2 0zm-1-7a1 1 0 1 1 1-1 1 0 0 1-1 1z" />, desc: "Boost speed & SEO rank" },
                         { title: "Trust Gaps", icon: <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12v4.7c0 4.67-3.13 8.96-7 10.16-3.87-1.2-7-5.49-7-10.16v-4.7l7-3.12z" />, desc: "Boost credibility instantly" },
-                        { title: "Confusing Copy", icon: <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />, desc: "Clear text that converts" },
+                        { title: "Confusing Copy", icon: <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />, desc: "Clear text that converts" },
                     ].map((item, i) => {
                         const angleDeg = (i * 360) / 6;
                         return (
@@ -77,7 +77,7 @@ export const WhyUsSection = () => {
                                 key={i}
                                 className="absolute top-1/2 left-1/2"
                                 onMouseEnter={() => setIsPaused(true)}
-                    onMouseLeave={() => setIsPaused(false)}
+                                onMouseLeave={() => setIsPaused(false)}
                                 style={{
                                     width: '240px',
                                     marginLeft: '-120px',

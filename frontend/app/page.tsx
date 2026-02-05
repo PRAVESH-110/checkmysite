@@ -430,7 +430,7 @@ function HomeClient() {
       <div className="flex flex-col md:flex-row sm:flex-row gap-15  w-full max-w-6xl mx-auto mb-30 px-4 items-stretch">
 
         {/* Good Website */}
-        <div className="flex-1 flex flex-col p-5 bg-gradient-to-b from-red-500/5 to-orange-500/5 border border-red-500/20 rounded-3xl shadow-2xl backdrop-blur-sm relative overflow-hidden group hover:border-red-500/50 hover:shadow-[0_0_40px_-10px_rgba(239,68,68,0.3)] transition-all duration-300">
+        <div className="flex-1 flex flex-col items-center text-center p-5 bg-gradient-to-b from-red-500/5 to-orange-500/5 border border-red-500/20 rounded-3xl shadow-2xl backdrop-blur-sm relative overflow-hidden group hover:border-red-500/50 hover:shadow-[0_0_40px_-10px_rgba(239,68,68,0.3)] transition-all duration-300">
           {/* Glow Effect */}
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-red-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -444,7 +444,7 @@ function HomeClient() {
         </div>
 
         {/* Great Website */}
-        <div className="flex-1 flex flex-col p-5 bg-gradient-to-b from-emerald-500/5 to-green-500/5 border border-green-500/20 rounded-3xl shadow-2xl backdrop-blur-sm relative overflow-hidden group hover:border-green-500/50 hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.3)] transition-all duration-300">
+        <div className="flex-1 flex flex-col items-center text-center p-5 bg-gradient-to-b from-emerald-500/5 to-green-500/5 border border-green-500/20 rounded-3xl shadow-2xl backdrop-blur-sm relative overflow-hidden group hover:border-green-500/50 hover:shadow-[0_0_40px_-10px_rgba(34,197,94,0.3)] transition-all duration-300">
           {/* Glow Effect */}
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-green-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -462,7 +462,7 @@ function HomeClient() {
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-black font-outfit md:m-10 lg:m-15 m-5"> What we do ?</h1>
 
       {/* mobile scroller animation */}
-      <div className="flex max-w-6xl mx-auto px-6 py-32 gap-20">
+      <div className="flex flex-col md:flex-row max-w-6xl mx-auto px-6 py-32 gap-20">
         {/* Timeline */}
         <div
           ref={timelineRef}
@@ -490,7 +490,7 @@ function HomeClient() {
         </div>
 
         {/* Content */}
-        <div className="flex-1 space-y-30">
+        <div className="flex-1 space-y-30 flex flex-col items-center text-center md:block md:text-left">
           {sections.map((section) => (
             <div
               key={section.id}
@@ -518,10 +518,10 @@ function HomeClient() {
 
       {/* why chose us */}
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-black font-outfit md:m-10 lg:m-15 m-5"> Why chose us ?</h1>
-      
-          <div className="w-full max-w-7xl mx-auto mt-10 mb-32 relative">
-            <WhyUsSection />
-          </div>
+
+      <div className="w-full max-w-7xl mx-auto mt-10 mb-32 relative">
+        <WhyUsSection />
+      </div>
 
       <div className="flex justify-center my-20">
         <Link
