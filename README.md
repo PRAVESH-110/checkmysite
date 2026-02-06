@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # CheckMySite
+=======
+CheckMySite
+>>>>>>> c6f891bb7658c417371c3aac5470b42b5f63152a
 
 A full-stack auditing tool that scans websites to find design flaws and conversion blockers. It provides a deterministic score and a checklist of actionable fixes to improve user experience.
 
