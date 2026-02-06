@@ -11,6 +11,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:3000",
+  "https://checkmysite.vercel.app",
   process.env.FRONTEND_URL // Add your production frontend URL here
 ].filter(Boolean); // Filter out undefined values
 
