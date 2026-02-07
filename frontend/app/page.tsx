@@ -7,6 +7,7 @@ import { useToast } from "./providers/ToastProvider";
 import { motion, useSpring, type Variants } from "framer-motion";
 import { WhyUsSection } from "../components/WhyUsSection";
 import { ArrowDown } from "lucide-react";
+import { WarmupLoader } from "./components/WarmupLoader";
 const sections = [
   {
     id: "analysis",
@@ -104,6 +105,7 @@ function HomeClient() {
   const [scanResult, setScanResult] = useState<any>(null);
 
   const [loading, setLoading] = useState(false);
+  const [isFirstScan, setIsFirstScan] = useState(true);
   const [inputUrl, setInputUrl] = useState("");
   const [scanId, setScanId] = useState("");
   const [error, setError] = useState("");
@@ -160,13 +162,25 @@ function HomeClient() {
       setError("");
       setScanResult(null);
       hasNotifiedRef.current = false;
+
       const startScan = await scanRequest(inputUrl);
+
+      // Mark first scan as done upon success
+      setIsFirstScan(false);
+
       const id = startScan.scanId;
       setScanId(id);
       router.replace(`/?scanId=${id}`);
       // Polling is handled by useEffect
     } catch (err: any) {
       setLoading(false);
+
+      // If first scan fails (likely cold start), fail silently so user can retry
+      if (isFirstScan) {
+        console.error("Warmup scan failed:", err);
+        return;
+      }
+
       setError(err.message || "Something went wrong");
       console.log("", err);
       showToast(err.message || "Something went wrong", "error");
@@ -284,7 +298,7 @@ function HomeClient() {
         </div>
 
         <form
-          className="flex flex-col sm:flex-row gap-4 max-w-[500px] mx-auto w-full mb-8"
+          className="flex flex-col sm:flex-row gap-4 max-w-[500px] mx-auto w-full mb-8 items-center"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
@@ -295,18 +309,24 @@ function HomeClient() {
             value={inputUrl}
             onChange={(e) => setInputUrl(e.target.value)}
             placeholder="Enter your website URL (e.g., https://example.com)"
-            className="flex-1  px-6 py-4 rounded-full border border-black/10 bg-white/50 text-base transition-all outline-none focus:border-[#0070f3] focus:ring-4 focus:ring-[#0070f3]/10 focus:bg-white dark:bg-white/5 dark:border-white/10 dark:text-white dark:focus:bg-black/50"
+            className="flex-1 w-full px-6 py-4 rounded-full border border-black/10 bg-white/50 text-base transition-all outline-none focus:border-[#0070f3] focus:ring-4 focus:ring-[#0070f3]/10 focus:bg-white dark:bg-white/5 dark:border-white/10 dark:text-white dark:focus:bg-black/50"
             required
             disabled={loading}
           />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full sm:w-auto px-6 py-4 sm:py-2 rounded-full border-0 font-semibold text-base transition-all whitespace-nowrap text-white ${loading ? 'bg-gradient-to-br from-[#625f6c] to-[#261e23] cursor-not-allowed opacity-80' : 'bg-gradient-to-br from-[#7051c3] to-[#ff70cc] cursor-pointer hover:bg-[#0051a2] hover:shadow-[0_4px_12px_rgba(0,118,255,0.3)]'}`}
-          >
-            {loading ? "Scanning..." : "Analyze my site"}
-          </button>
+          {loading && isFirstScan ? (
+            <div className="w-full sm:w-auto min-w-[140px]">
+              <WarmupLoader />
+            </div>
+          ) : (
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full sm:w-auto px-6 py-4 sm:py-2 rounded-full border-0 font-semibold text-base transition-all whitespace-nowrap text-white ${loading ? 'bg-gradient-to-br from-[#625f6c] to-[#261e23] cursor-not-allowed opacity-80' : 'bg-gradient-to-br from-[#7051c3] to-[#ff70cc] cursor-pointer hover:bg-[#0051a2] hover:shadow-[0_4px_12px_rgba(0,118,255,0.3)]'}`}
+            >
+              {loading ? "Scanning..." : "Analyze my site"}
+            </button>
+          )}
         </form>
         {error && <p className="text-red-500 font-medium">{error}</p>}
       </section>
