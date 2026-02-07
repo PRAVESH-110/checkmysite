@@ -4,6 +4,7 @@ import Modal from '@/app/components/Modal';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { WarmupLoader } from '../../components/WarmupLoader';
 import { useAuth } from "../../../context/AuthContext";
 import { signupRequest } from '../../../config/auth.api';
 
@@ -12,6 +13,12 @@ export default function SignUp() {
     const { login } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [isFirstAttempt, setIsFirstAttempt] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return !sessionStorage.getItem("server_warm");
+        }
+        return true;
+    });
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -30,10 +37,20 @@ export default function SignUp() {
             if (data.token && data.user) {
                 login(data.token, data.user);
             }
+
+            // Mark server as warm
+            sessionStorage.setItem("server_warm", "true");
+            setIsFirstAttempt(false);
+
             router.back();
         }
         catch (err: any) {
-            setError(err.message || "Signup failed");
+            if (isFirstAttempt) {
+                console.log("Warmup attempt failed silently.");
+                setIsFirstAttempt(false);
+            } else {
+                setError(err.message || "Signup failed");
+            }
         }
         finally {
             setLoading(false);
@@ -114,13 +131,19 @@ export default function SignUp() {
                         <p className="text-red-400 text-xs text-center">{error}</p>
                     )}
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full py-2.5 mt-2 rounded-xl bg-gradient-to-r from-[#7051c3] to-[#ff70cc] text-white font-bold text-sm shadow-lg shadow-[#556270]/20 hover:shadow-[#556270]/40 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-60"
-                    >
-                        {loading ? "Creating..." : "Create Account"}
-                    </button>
+                    {loading && isFirstAttempt ? (
+                        <div className="mt-4">
+                            <WarmupLoader />
+                        </div>
+                    ) : (
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full py-2.5 mt-2 rounded-xl bg-gradient-to-r from-[#7051c3] to-[#ff70cc] text-white font-bold text-sm shadow-lg shadow-[#556270]/20 hover:shadow-[#556270]/40 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-60"
+                        >
+                            {loading ? "Creating..." : "Create Account"}
+                        </button>
+                    )}
                 </form>
 
                 <div className="mt-7 text-center text-xs text-white/50">

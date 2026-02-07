@@ -105,7 +105,13 @@ function HomeClient() {
   const [scanResult, setScanResult] = useState<any>(null);
 
   const [loading, setLoading] = useState(false);
-  const [isFirstScan, setIsFirstScan] = useState(true);
+  // Check global warm state
+  const [isFirstScan, setIsFirstScan] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return !sessionStorage.getItem("server_warm");
+    }
+    return true;
+  });
   const [inputUrl, setInputUrl] = useState("");
   const [scanId, setScanId] = useState("");
   const [error, setError] = useState("");
@@ -165,7 +171,8 @@ function HomeClient() {
 
       const startScan = await scanRequest(inputUrl);
 
-      // Mark first scan as done upon success
+      // Mark server as warm globally & locally
+      sessionStorage.setItem("server_warm", "true");
       setIsFirstScan(false);
 
       const id = startScan.scanId;
