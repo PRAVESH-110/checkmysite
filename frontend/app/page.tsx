@@ -305,7 +305,7 @@ function HomeClient() {
         </div>
 
         <form
-          className="flex flex-col sm:flex-row gap-4 max-w-[500px] mx-auto w-full mb-8 items-center"
+          className="relative z-20 flex flex-col sm:flex-row gap-4 max-w-[500px] mx-auto w-full mb-8 items-center"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
