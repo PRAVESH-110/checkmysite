@@ -183,8 +183,11 @@ function HomeClient() {
       setLoading(false);
 
       // If first scan fails (likely cold start), fail silently so user can retry
-      if (isFirstScan) {
-        console.error("Warmup scan failed:", err);
+      // BUT: If it's an Auth error ("You must be signed up"), show it!
+      const isAuthError = err.message.includes("must be signed") || err.message.includes("token");
+
+      if (isFirstScan && !isAuthError) {
+        console.error("Warmup scan failed (suppressed):", err);
         return;
       }
 
