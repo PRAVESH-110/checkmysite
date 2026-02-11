@@ -27,8 +27,30 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://checkmysite.vercel.app"),
   title: "CheckMySite - Website Conversion Analysis",
   description: "Identify design flaws and conversion blockers with our deterministic audit tool.",
+  openGraph: {
+    title: "CheckMySite - Website Conversion Analysis",
+    description: "Identify design flaws and conversion blockers with our deterministic audit tool.",
+    type: "website",
+    url: "https://checkmysite.vercel.app",
+    siteName: "CheckMySite",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "CheckMySite Preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CheckMySite - Website Conversion Analysis",
+    description: "Identify design flaws and conversion blockers with our deterministic audit tool.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
