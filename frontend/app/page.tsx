@@ -332,7 +332,7 @@ function HomeClient() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full sm:w-auto px-6 py-4 sm:py-2 rounded-full border-0 font-semibold text-base transition-all whitespace-nowrap text-white ${loading ? 'bg-gradient-to-br from-[#625f6c] to-[#261e23] cursor-not-allowed opacity-80' : 'bg-gradient-to-br from-[#7051c3] to-[#ff70cc] cursor-pointer hover:bg-[#0051a2] hover:shadow-[0_4px_12px_rgba(0,118,255,0.3)]'}`}
+              className={`w-full sm:w-auto px-6 py-3 lg:py-4 sm:py-4 rounded-full border-0 font-semibold text-base transition-all whitespace-nowrap text-white ${loading ? 'bg-gradient-to-br from-[#625f6c] to-[#261e23] cursor-not-allowed opacity-80' : 'bg-gradient-to-br from-[#7051c3] to-[#ff70cc] cursor-pointer hover:bg-[#0051a2] hover:shadow-[0_4px_12px_rgba(0,118,255,0.3)]'}`}
             >
               {loading ? "Scanning..." : "Analyze my site"}
             </button>
