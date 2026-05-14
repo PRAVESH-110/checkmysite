@@ -39,7 +39,7 @@ scanRouter.post("/", authMiddleware, async function (req, res) {
 
     })
 })
-
+8
 scanRouter.get('/:scanId', authMiddleware, async function (req, res) {
     const scanId = req.params.scanId;
 

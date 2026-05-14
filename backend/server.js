@@ -5,6 +5,7 @@ import connectDB from "./config/db.js"
 import userRouter from "./route/route.user.js";
 import scanRouter from "./route/route.scan.js";
 import orderRouter from "./route/route.order.js";
+import "./workers/worker.js";
 
 const app = express();
 app.use(express.json());

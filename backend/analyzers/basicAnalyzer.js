@@ -14,7 +14,7 @@ function basicAnalyzer(html) {
        BASIC CONTENT SIGNALS
     ------------------------- */
 
-    const titleText = $("title").text().trim();
+    const titleText = $("title").text().trim(); 
     const metaDescription = $('meta[name="description"]').attr("content")?.trim();
     const h1Elements = $("h1");
     const h1Count = h1Elements.length;

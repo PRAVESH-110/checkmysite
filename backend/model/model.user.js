@@ -23,11 +23,11 @@ const userSchema = new mongoose.Schema({
     plan: {
         type: String,
         enum: ["free", "basic", "pro"],
-        default:"free"
+        default: "free"
     },
     planExpiresAt: {
         type: Date,
-        default: null
+        default: null,
     }
 })
 export const User = mongoose.model('User', userSchema);
