@@ -1,6 +1,5 @@
-<<<<<<< HEAD
+HEAD
 # CheckMySite
-=======
 CheckMySite
 >>>>>>> c6f891bb7658c417371c3aac5470b42b5f63152a
 
