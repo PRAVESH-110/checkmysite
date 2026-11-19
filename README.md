@@ -2,7 +2,7 @@
 
 # CheckMySite
 
-**An automated, full-stack website conversion auditor that identifies design flaws, trust blockers, and UX friction using deterministic analysis.**
+**An automated, full-stack website conversion auditor that identifies design flaws, trust blockers, and UX friction using deterministic analysis of your website.**
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.1-black?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev/)
